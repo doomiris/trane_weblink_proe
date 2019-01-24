@@ -1,0 +1,238 @@
+﻿<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<title>Domisoft-PRO-tool</title>
+<link href="es/ESview.css" rel="stylesheet" type="text/css" />
+<link href="mstl.css" rel="stylesheet" type="text/css" />
+<link href="es/es-SpryAccordion.css" rel="stylesheet" type="text/css" />
+<script type="text/javascript" src="js/pfcUtils.js"></script>
+<script type="text/javascript" src="js/weblinkpub.js"></script>
+<script type="text/javascript" src="js/domipub.js"></script>
+<script type="text/javascript" src="../SpryAssets/xpath.js"></script>
+<script type="text/javascript" src="../SpryAssets/SpryData.js"></script>
+<script type="text/javascript" src="../SpryAssets/SpryAccordion.js"></script>
+<script type="text/javascript" src="../SpryAssets/SpryEffects.js"></script>
+<script type="text/javascript" src="tool2.js"></script>
+<script type="text/javascript" src="tool2.new.js"></script>
+<script type="text/javascript">
+<!--
+var Acc;
+
+var dsDrw = new Spry.Data.DataSet();
+
+var esD;
+var esPath=getCookie('esPath');
+if (!esPath) esPath="ES/esdata.xml";
+var allView = new Spry.Data.XMLDataSet(esPath, "ES/Define");
+function changePath(path){
+	addCookie('esPath',path);
+	allView.setURL(path);
+	allView.loadData();	
+}
+Spry.Data.Region.addObserver("dlist", function(notifier, data){
+	if (notifier!=="onPostUpdate") return;
+	if (!allView.dataWasLoaded) return;
+	Acc = new Spry.Widget.Accordion("Accordion1");	
+	Acc.openPanel(1);
+	if (Session.CurrentModel) Spry.$('FileName').innerText=Session.CurrentModel.FileName;
+});
+Spry.Data.Region.addObserver("dtobv", function(notifier, data){
+	if (notifier!=="onPostUpdate") return;
+  	if (!allView.dataWasLoaded) return;
+	if(!esD){
+		esD=new ES();
+		if (esD.esDrwTab) esD.putInWeb();
+	}else{
+		var dbES=allView.getCurrentRow();
+		var esData=new esDataCont([dbES["Global"],dbES["APR"],dbES["EMAIR"],dbES["NAR"]].join(";"));
+		esD.esWebTab=document.getElementById('ES_SHOW');
+		esD.putInWeb(esData);
+	}
+});
+function Apply(){
+	if (!Session.GetModelWindow(esD.drawing)) {
+		alert("Not the same window! Please active current window or reload this page and try again!");
+		return;
+	}
+	esD.applyToDrw();
+//	dTable.Display();
+	CloseBrowser();
+}
+-->
+</script>
+<style type="text/css">
+.tbmCap {
+	font-size: 20px;
+	padding: 5px;
+	height: 25px;
+	border: 1px solid #333;
+	margin-bottom: 5px;
+	background-image: url(img/header.jpg);
+	background-position: 15px;
+}
+.floatDiv{
+	position: absolute;
+	z-index: 10;
+	width: 175px;
+	left: 207px;
+	top: 14px;
+	height:50px;
+}
+.demoDiv{
+	background-color:#CCC;
+	border: 1px solid #333;
+	overflow:hidden;
+	width:100%;
+	height:50px;
+}
+.hideInitially{
+	visibility: hidden;
+}
+.drwList{
+	font-size: 14px;
+	height: 20px;
+	list-style-type: circle;
+	vertical-align:middle;
+	padding-top:5px;
+}
+.flistbtn{
+	display:inline;
+	float:left;
+	cursor:pointer;
+	background-image:url(img/down24.png);
+	width:24px;
+	height:24px;
+	border: 0px solid #FFF;
+	padding:0px;
+	font-size:30px;
+}
+</style>
+</head>
+
+<body>
+<table width="700" border="0"><tr>
+<td width="190" valign="top">
+<select name="esSel" id="esSel" style="width:190px" onchange="changePath(this.value)">
+	<option value="ES/esdata.xml" style="background-color:#FCC">RTAE-Pueblo</option>
+	<option value="ES/esdata_f.xml" style="background-color:#CCF">RTAE-Charmes</option>
+</select>
+<script type="text/javascript">
+var esSel=Spry.$('esSel');
+for (i=0;i<esSel.length;i++) if (esSel[i].value==esPath) esSel.selectedIndex=i;
+</script>
+<div spry:region="allView" id="dlist">
+<div id="Accordion1" class="Accordion" tabindex="0" onfocus="this.blur()">
+	<div class="AccordionPanel">
+		<div class="AccordionPanelTab">All</div>
+		<div class="AccordionPanelContent sco">
+			<ul spry:repeatchildren="allView">
+				<li spry:setrow="allView" class="listes" spry:hover="listhover" spry:select="listselect">
+					{Name}
+					<span spry:if="'{Description}'.length>0" class="desp"><br />{Description}</span>
+				</li>
+			</ul>
+		</div>
+	</div>
+<!-- ====================== -->
+	<div class="AccordionPanel">
+		<div class="AccordionPanelTab">Favorites</div>
+		<div class="AccordionPanelContent">
+			<ul spry:repeatchildren="allView">
+				<li spry:setrow="allView" class="listes" spry:hover="listhover" spry:select="listselect" spry:if="'{Class}'=='Favorites'">
+					{Name}
+					<span spry:if="'{Description}'.length>0" class="desp"><br />{Description}</span>
+				</li>
+			</ul>
+		</div>
+	</div>
+</div>
+</div>
+</div>
+</td>
+<td width="500" valign="top">
+	<div class="tbmCap">
+		<input type="button" value="    " onclick="squish_hidden.start();" class="flistbtn" name="flistbt1" id="flistbt1"/>
+<div style="display:inline; float:left; margin-left:5px"><label id="FileName" style="color:#FFF"/>None</label></div>
+	</div>
+  <div spry:detailregion="allView" id="dtobv">
+<table width="100%" cellpadding="0" border="1" bordercolor="#333333" cellspacing="0" id="ES_SHOW" ondblclick="ES_SHOW_OnDblClick()">
+    <tr><td height="25" colspan="4">
+    	<span class="esTitle">ENGINEERING SPECIFICATIONS</span></td>
+    </tr><tr>
+        <td width="25%" height="25">GLOBAL</td>
+        <td colspan="3" width="75%">REGIONAL</td>
+    </tr><tr>
+        <td width="25%" height="25">ALL REGIONS</td>
+        <td width="25%">APR</td>
+        <td width="25%">EMAIR</td>
+        <td width="25%">NAR</td>
+    </tr>
+</table>
+  </div>
+<div id="DivRowControl" spry:region="allView">
+<table width="100%" border="0" class="toolbar"><tr>
+	<td>
+	<label style="float:right; display:inline"><img src="img/tip.png" width="16" height="16" title="Double click a cell to edit it."/></label>
+	<img src="img/AddRow.png" width="12" height="12" /> <label onclick="lblAddRow_OnClick()" spry:hover="lblHover">Add Line</label>
+	<img src="img/DelRow.png" width="12" height="12" /> <label onclick="lblDelRow_OnClick()" spry:hover="lblHover">Delete</label>
+	<img src="img/Export.png" width="12" height="12" /> <label onclick="lblExport_OnClick()" spry:hover="lblHover">Get PLM Search String</label>
+	<label id="lblCopyTip" style="color:red;visibility:hidden" onclick="this.style.visibility='hidden'"><img src="img/okicon.png" width="11" height="11" /> Copied to clipboard.</label>
+</td></tr>
+<tr><td style="visibility:hidden">&nbsp;<img src="img/arr.png" width="6" height="11" /> Suggested ES : <label id="Autoname" style="color:red"></label></td></tr>
+</table>
+</div>
+<div spry:region="allView" style="text-align:right">
+	<input type="button" onclick="Apply()" value="Apply" class="bt" spry:hover="bh"/>
+	<input type="button" onclick="CloseBrowser()" value="Cancel" class="bt" spry:hover="bh"/>
+</div>
+</td>
+</tr>
+</table>
+<div id="menuDiv" class="floatDiv">
+	<div class="demoDiv hideInitially" id="squish_hidden">
+		<input type="button" onclick="squish_hidden.start();" class="flistbtn" name="flistbt2" id="flistbt2"/>
+		<div style="display:inline; float:left; margin-left:5px; font-size:14px; padding-top:5px"><strong>Re-load ES from:</strong></div>
+		<div style="width:100%; clear:both">
+			<ul style="margin-left:25px" spry:region="dsDrw">
+				<li spry:hover="hol" class="drwList" onclick="history.go(0)">Current Drawing</li>
+				<li spry:repeat="dsDrw" spry:hover="hol"  class="drwList" onclick="getEsFrom('{FileName}')" title="{CommonName}">{FileName}</li>
+			</ul>
+		</div>		
+	</div>
+</div>
+<script type="text/javascript">
+var animation_start = function(){
+	var DrwList = [];
+	var retObj=GetList(".drw");
+	for (var i=0; i<retObj.NumMdls; i++)
+		if (retObj.MdlNameExt.Item(i)!==Session.CurrentModel.FileName)
+		try{
+			DrwList.push({
+				FileName: retObj.MdlNameExt.Item(i),
+				CommonName: retObj.ModelObjects.Item(i).ListModels().Item(0).CommonName.replace(/\"/g,'&quot;')
+			});
+		}catch(e){}
+	dsDrw.setDataFromArray(DrwList);
+	
+}
+var animation_stop = function(){
+	if (Spry.$('squish_hidden').style.width!=="0px"){
+		Spry.$('squish_hidden').style.height=50+25*dsDrw.data.length;
+		Spry.$('flistbt2').focus();
+	}else Spry.$('flistbt1').focus();
+}
+function getEsFrom(from){
+	var obj=Session.GetModelFromFileName(from.replace(/<.*>/,""));
+	var fES=new ES(obj,1);
+	if (esD.esWebTab.rows.length>3)
+		for (i=esD.esWebTab.rows.length-1; i>2; i--)
+			esD.esWebTab.deleteRow(i);
+	esD.putInWeb(fES.loadFromDrw());
+	squish_hidden.start();
+}
+var squish_hidden= new Spry.Effect.Squish('squish_hidden', {from: '0%', to: '100%', duration: 250, toggle: true, scaleContent: false, setup: animation_start, finish: animation_stop});
+</script>
+
+</body>
+</html>

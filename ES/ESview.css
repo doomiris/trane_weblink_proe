@@ -1,0 +1,79 @@
+@charset "utf-8";
+body {
+	margin: 0px;
+	padding: 5px;
+	border: 0px;
+	overflow-x: hidden;
+	font-family: Tahoma;
+	font-size: 12px;
+}
+.esTitle {
+	font-size: 16px;
+	font-weight: bold;
+}
+#ES_SHOW td {
+	text-align: center;
+	font-size: 16px;
+	font-family: Arial;
+}
+#dlist #Accordion1 .AccordionPanel.AccordionPanelOpen .AccordionPanelContent ul {
+	margin-left: 0px;
+	padding-left: 25px;
+	margin-top: 0px;
+	padding-top: 0px;
+}
+.listes, .favli  {
+	font-family: Tahoma;
+	font-size: 12px;
+	font-weight: bold;
+	list-style-type: square;
+	list-style-position: outside;
+	list-style-image:url('../img/arr.png');
+	margin-top: 1px;
+	margin-bottom: 1px;
+	margin-right: 1px;
+	padding-top: 2px;
+	padding-bottom: 2px;
+	background-color: #FFF;
+	border: 1px solid #FFF
+}
+.favli {
+	list-style-image:url('../img/fav.png');
+}
+.listhover {
+	background-color: #FFC;
+	border: 1px solid #999;
+	cursor:pointer;
+}
+.listselect {
+	background-color: #FF9;
+	border: 1px solid #999999;
+	color:#800
+}
+
+.desp {
+	font-family: Arial;
+	font-size: 10px;
+	color: #0066CC;
+	font-weight: normal
+}
+.toolbar{
+	font-family: Tahoma;
+	font-size: 12px;
+}
+#ES_SHOW {
+	cursor:default;
+	background-image:url('../img/esbg.png'); background-repeat:repeat;
+}
+.oipt {
+	width: 100px;
+	font-family: Arial, Helvetica, sans-serif;
+	font-size: 12px;
+	color: #003366;
+	text-align: left;
+}
+.lblHover {
+	color: #F00000;
+	text-decoration: underline;
+	cursor:pointer;
+}

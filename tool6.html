@@ -1,0 +1,60 @@
+﻿<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<title>无标题文档</title>
+<script type="text/javascript" src="js/domipub.js"></script>
+<script type="text/javascript" src="../SpryAssets/SpryData.js"></script>
+<script type="text/javascript">
+function ShowFolderFileList(folderspec,key){
+	var fso = new ActiveXObject("Scripting.FileSystemObject");
+	var fc = new Enumerator(fso.GetFolder(folderspec).files);
+	var s = [];
+	for (; !fc.atEnd(); fc.moveNext())  {
+		var ss=new RegExp(key); ss.ignoreCase=true;
+		if (fc.item().Name.search(ss)>=0) s.push(fc.item());
+	}
+	s.sort(function(a,b){return dateDiff('S',b.DateLastModified,a.DateLastModified)});
+	return(s);
+}
+function DeleteFiles(s,keepNewest){
+	if (!keepNewest) keepNewest=0;
+	try{
+		for (i=0; i<s.length-keepNewest; i++){
+			try{
+				s[i].Delete(true);
+			}catch(e){};
+		}
+	}catch(e){};
+	location.href="tool6.html";
+}
+</script>
+</head>
+
+<body>
+<div id='flist'>
+</div>
+<input type="button" onclick="DeleteFiles(FilesList[0])" value="delete" />
+<div id='clist'>
+</div>
+<input type="button" onclick="DeleteFiles(FilesList[1],1)" value="delete" />
+<div id='ilist'>
+</div>
+<input type="button" onclick="DeleteFiles(FilesList[2])" value="delete" />
+<div id='blist'>
+</div>
+<input type="button" onclick="DeleteFiles(FilesList[3])" value="delete" />
+<script type="text/javascript">
+var FilesList=[];
+FilesList.push(ShowFolderFileList("c:\\workspaces",".log"));
+FilesList.push(ShowFolderFileList("c:\\workspaces","config.win"));
+FilesList.push(ShowFolderFileList("c:\\workspaces",".inf"));
+FilesList.push(ShowFolderFileList("c:\\workspaces",".bom"));
+document.getElementById('flist').innerHTML=FilesList[0].join("<br />");
+document.getElementById('clist').innerHTML=FilesList[1].join("<br />");
+document.getElementById('ilist').innerHTML=FilesList[2].join("<br />");
+document.getElementById('blist').innerHTML=FilesList[3].join("<br />");
+</script>
+
+</body>
+</html>

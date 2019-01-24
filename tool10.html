@@ -1,0 +1,135 @@
+﻿<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" xmlns:ice="http://ns.adobe.com/incontextediting">
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<title>添加新模板参数</title>
+<script type="text/javascript" src="js/pfcUtils.js"></script>
+<script type="text/javascript" src="js/weblinkpub.js"></script>
+<script type="text/javascript" src="js/domipub.js"></script>
+<script type="text/javascript" src="../SpryAssets/SpryData.js"></script>
+<script type="text/javascript">
+function updatePara(){
+	drw=Session.CurrentModel;
+	var formatName=drw.GetSheetFormat(drw.CurrentSheetNumber).FileName
+//	if(formatName.toUpperCase!=="REF_QHC_CN_A3.FRM"){
+//		alert("Please replace sheet format to 'REF_QHC_CN_A3.frm' before using this function");
+//		CloseBrowser();
+//		return;
+//	}
+	SetPara(drw,"Drafter",			1,	GetPara(drw,"Author"));
+	SetPara(drw,"Checker",			1,	GetPara(drw,"Checker"));
+	SetPara(drw,"Engr",				1,	GetPara(drw,"Approver"));
+//	SetPara(drw,"dwg_name",			1,	GetPara(drw,"Dwg_no"));
+	SetPara(drw,"PART_NAME_LANG",	1,	GetPara(drw,"Description_CN"));
+//	SetPara(drw,"PTC_COMMON_NAME",	1,	GetPara(drw,"Description_EN"));
+	drw.CommonName	=GetPara(drw,"Description_EN");
+//	SetPara(drw,"Product_code",		1,	GetPara(drw,"Product_code"));
+//	SetPara(drw,"Std_tolerance",	1,	GetPara(drw,"Std_tolerance"));
+//	SetPara(drw,"Std_paint",		1,	GetPara(drw,"Std_paint"));
+	SetPara(drw,"MATERIAL_CN",		1,	GetPara(drw,"Material_name"));
+	SetPara(drw,"DRAFT_DATE",		1,	GetPara(drw,"Date_Created"));
+	SetPara(drw,"CHECK_DATE",		1,	GetPara(drw,"Date_Checked"));
+	SetPara(drw,"ENGR_DATE",		1,	GetPara(drw,"Date_Approved"));
+	CloseBrowser();
+	}
+function addparas(){
+	drw=Session.CurrentModel;
+	if (!isParaExist(drw,"Drafter"))		SetPara(drw,"Drafter",1," ");
+	if (!isParaExist(drw,"Checker"))	SetPara(drw,"Checker",1," ");
+	if (!isParaExist(drw,"Engr"))	SetPara(drw,"Engr",1," ");
+	if (!isParaExist(drw,"PART_NAME_LANG"))	SetPara(drw,"PART_NAME_LANG",1," ");
+	if (!isParaExist(drw,"Product_code"))	SetPara(drw,"Product_code",1," ");
+	if (!isParaExist(drw,"Std_tolerance"))	SetPara(drw,"Std_tolerance",1,"GB/T 1804-m");
+	if (!isParaExist(drw,"Std_paint"))	SetPara(drw,"Std_paint",1,"Q/LD J052005");
+	if (!isParaExist(drw,"MATERIAL_CN"))	SetPara(drw,"MATERIAL_CN",1," ");
+	if (!isParaExist(drw,"DRAFT_DATE"))	SetPara(drw,"DRAFT_DATE",1," ");
+	if (!isParaExist(drw,"CHECK_DATE"))	SetPara(drw,"CHECK_DATE",1," ");
+	if (!isParaExist(drw,"ENGR_DATE"))	SetPara(drw,"ENGR_DATE",1," ");	
+	CloseBrowser();	
+}
+function delOldPara(){
+	drw=Session.CurrentModel;
+	DelPara(drw,"Author");
+	DelPara(drw,"Approver");
+	DelPara(drw,"Dwg_no");
+	DelPara(drw,"Description_CN");
+	DelPara(drw,"Description_EN");
+	DelPara(drw,"Material_name");
+	DelPara(drw,"Date_Created");
+	DelPara(drw,"Date_Checked");
+	DelPara(drw,"Date_Approved");
+	CloseBrowser();	
+}
+function addApprover1(){
+	drw=Session.CurrentModel;
+	SetPara(drw,"Author",1,"王海萍");
+	SetPara(drw,"Checker",1,"兰功鹏");
+	SetPara(drw,"Approver",1,"张朝昌");
+	SetPara(drw,"Date_Created",1,"8/15/2013");
+	SetPara(drw,"Date_Checked",1,"8/19/2013");
+	SetPara(drw,"Date_Approved",1,"8/20/2013");
+	CloseBrowser();
+	
+}
+function addApprover2(){
+	drw=Session.CurrentModel;
+	SetPara(drw,"Author",1,"董玉华");
+	SetPara(drw,"Checker",1,"兰功鹏");
+	SetPara(drw,"Approver",1,"张朝昌");
+	SetPara(drw,"Date_Created",1,"8/15/2013");
+	SetPara(drw,"Date_Checked",1,"8/19/2013");
+	SetPara(drw,"Date_Approved",1,"8/20/2013");
+	CloseBrowser();
+	
+}
+function addApprover3(){
+	drw=Session.CurrentModel;
+	SetPara(drw,"Author",1,"崔云杰");
+	SetPara(drw,"Checker",1,"兰功鹏");
+	SetPara(drw,"Approver",1,"张朝昌");
+	SetPara(drw,"Date_Created",1,"8/15/2013");
+	SetPara(drw,"Date_Checked",1,"8/19/2013");
+	SetPara(drw,"Date_Approved",1,"8/20/2013");
+	CloseBrowser();
+	
+}
+function myTB(){
+	drw=Session.CurrentModel;
+	var d=new Date();
+	mydate=d.Format("yyyy.MM.dd");
+	
+	if (GetPara(drw,"Drafter").length==0) SetPara(drw,"Drafter",1,"兰功鹏");
+	if (GetPara(drw,"Checker").length==0) SetPara(drw,"Checker",1,"龚金明");
+	if (GetPara(drw,"Engr").length==0) SetPara(drw,"Engr",1,"雷杰");
+//	SetPara(drw,"PART_NAME_LANG",1," ");
+	if (GetPara(drw,"Product_code").length==0) SetPara(drw,"Product_code",1,"ICF PHASE 2");
+//	SetPara(drw,"Std_tolerance",1,"GB/T 1804-m");
+//	SetPara(drw,"Std_paint",1,"Q/LD J052005");
+	if (GetPara(drw,"MATERIAL_CN").length==0) SetPara(drw,"MATERIAL_CN",1,"热锌板 DC51D+Z 0.8");
+	if (GetPara(drw,"DRAFT_DATE").length==0) SetPara(drw,"DRAFT_DATE",1,mydate);
+	if (GetPara(drw,"CHECK_DATE").length==0) SetPara(drw,"CHECK_DATE",1,mydate);
+	if (GetPara(drw,"ENGR_DATE").length==0) SetPara(drw,"ENGR_DATE",1,mydate);
+	drw.Regenerate();
+	CloseBrowser();	
+}
+	
+</script>
+</head>
+
+<body>
+<input type="button" onclick="addparas();" value="step 1 : 添加新参数(windchill)"/> | 
+<input type="button" onclick="updatePara();" value="step 2 : 旧模版更新参数(windchill)"/> | 
+<input type="button" onclick="alert('插件尚不支持,需要手动替换');" value="step 3 : 手动替换新模板(REF_QHC_CN_A3)"/> | 
+<input type="button" onclick="delOldPara();" value="step 4 : 删除旧模版参数(windchill)"/>
+
+<p> 对旧模板(A3_QHC_CN)按顺序执行1,2,3,4步骤</p>
+<p> 对其它模板仅执行1,3步骤</p>
+<p>&nbsp;</p>
+<p>&nbsp;</p>
+<input type="button" onclick="myTB();" value="一键TB"/>
+<!--<input type="button" onclick="addparas();" value="添加参数"/> | 
+<input type="button" onclick="addApprover1();" value="添加审批,WHP"/> | 
+<input type="button" onclick="addApprover2();" value="添加审批,DYH"/> | 
+<input type="button" onclick="addApprover3();" value="添加审批,CYJ"/>-->
+</body>
+</html>

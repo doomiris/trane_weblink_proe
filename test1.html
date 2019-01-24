@@ -1,0 +1,146 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<title>Domisoft-PRO-tool</title>
+<link href="mstl.css" rel="stylesheet" type="text/css" />
+<script type="text/javascript" src="js/pfcUtils.js"></script>
+<script type="text/javascript" src="js/weblinkpub.js"></script>
+<script type="text/javascript" src="js/domipub.js"></script>
+<script type="text/javascript" src="../SpryAssets/xpath.js"></script>
+<script type="text/javascript" src="../SpryAssets/SpryData.js"></script>
+<!--<script src="tool3.js" type="text/javascript"></script>-->
+<script type="text/javascript">
+//	var tb=drawing.GetTable(40);	//45 for tol. //46 for hole 反向表格排序+3,2 -2,2 //40 41 new format
+//	writeTextInCell(tb,2,2,"3");
+//	writeTextInCell(tb,3,2,"1,5");
+//	writeTextInCell(tb,4,2,"0,80");
+//	writeTextInCell(tb,6,3,"2");
+//	var tb=drawing.GetTable(41);	//45 for tol. //46 for hole 反向表格排序+3,2 -2,2
+//	writeTextInCell(tb,2,2,"0,12");
+//	writeTextInCell(tb,3,2,"0,12");
+
+
+//	var ti=tb.GetText(cell,0);
+//	alert(ti.Item(0));
+//CloseBrowser();
+//	var drawing=Session.CurrentModel;
+//	var tbs=drawing.ListTables();
+//	for (i=0; i<tbs.count; i++){
+//		var tb=drawing.GetTable(tbs(i).id);
+//		try{
+//			var ti=tb.GetText(pfcCreate("pfcTableCell").Create(4,1),0);
+//			if (ti.Item(0)=="test"){
+//				alert(tbs(i).id);
+//			}
+//		}catch(e){void(e)};
+//	}
+//	var drawing=Session.CurrentModel;
+//	var dxfIns=pfcCreate("pfcDXFExportInstructions").Create();
+//	var dxfIns=pfcCreate("pfcDWGSetupExportInstructions").Create();
+	
+//	drawing.Export("c:\\workspaces\\exp.dwg",dxfIns);
+
+function GetCellText(){
+	var drawing=Session.CurrentModel;
+	var selOptions = pfcCreate ("pfcSelectionOptions").Create("dwg_table");
+	selOptions.MaxNumSels = 1;
+	var selections = Session.Select (selOptions, void null);
+	var table=selections.Item(0).SelItem;
+	var cell=pfcCreate ("pfcTableCell").Create (3,1);
+	var m=table.GetCellNote(cell);
+	alert(m);
+	return;
+	var cellnote = table.GetCellNote(cell);
+	var noteinstr = cellnote.GetInstructions(true);
+	var lines = noteinstr.TextLines;
+	alert(lines.Item(0).Texts.Item(0).TextHeight);
+//	alert(lines.Item(0).Texts.Item(0).Text);	
+//	alert(ReadTextInCell(table,1,3));
+}
+function test2(){
+	var selOptions = pfcCreate ("pfcSelectionOptions").Create("dwg_table");
+	selOptions.MaxNumSels = 1;
+	var selections = Session.Select (selOptions, void null);
+	var table=selections.Item(0).SelItem;
+	var tbinfo=table.GetInfo(0);
+	var org=tbinfo.Origin;
+	alert(org.Item(0)+", "+org.Item(1));
+}
+function GetSelTablID(){
+	var selOptions = pfcCreate ("pfcSelectionOptions").Create("dwg_table"); //any_note 
+	selOptions.MaxNumSels = 1;
+	var selections = Session.Select (selOptions, void null);
+	var table=selections.Item(0).SelItem;
+	alert(table.id);
+}
+function GetSelCell(){
+	var selOptions = pfcCreate ("pfcSelectionOptions").Create("table_cell");
+	selOptions.MaxNumSels = 1;
+	var selections = Session.Select (selOptions, void null);
+	var cell=selections.Item(0).SelItem;
+	alert(cell.RowNumber+", "+cell.ColumnNumber);
+}
+
+function AddNote(){
+var drawing=Session.CurrentModel;
+var loc=[29,600,0.0]; 
+var text = pfcCreate ("pfcDetailText").Create ("hello world\n 555sss");
+text.TextHeight=2.54*2.315887;
+var texts = pfcCreate ("pfcDetailTexts");
+texts.Append (text);
+var textLine = pfcCreate ("pfcDetailTextLine").Create (texts);
+var textLines = pfcCreate ("pfcDetailTextLines");
+textLines.Append (textLine);
+//add lines here
+var location=pfcCreate ("pfcPoint3D");
+for (i=0; i<3; i++){location.Set(i,loc[i]);};
+var instrs=pfcCreate ("pfcDetailNoteInstructions").Create(textLines);
+var position = pfcCreate ("pfcFreeAttachment").Create (location);
+var allAttachments = pfcCreate ("pfcDetailLeaders").Create ();
+allAttachments.ItemAttachment = position;
+instrs.Leader=allAttachments;
+var note = drawing.CreateDetailItem (instrs);
+note.Show ();
+CloseBrowser();
+}
+//=========
+function TestToogle(){
+	addCookie("Testing",Spry.$(chkTesting).checked);
+}
+//=========
+function copyfile(CopyWhat,CopyTo){
+	if (!window.confirm("This action will add version string to all PDFs in c:\\workspaces.\nYou should batch load all drawing into session first.\n\nContinue?")) return;
+try{ 
+	var fso=new ActiveXObject("Scripting.FileSystemObject"); 
+}catch(e){alert("can't create FSO object")}
+	if (!fso) return;
+	if (!CopyTo) CopyTo=workspace+"\\Symbols\\";
+	if (!fso.FolderExists(CopyTo)) fso.CreateFolder(CopyTo);
+	var sFile=fso.GetFile(CopyWhat);
+	sFile.Copy(CopyTo,true);
+	alert("Done");	
+}
+
+</script>
+
+</head>
+
+<body>
+
+<table width="700" border="0" align="center" cellpadding="5" cellspacing="0">
+	<tr>
+		<td>
+<input type="button" name="aa" id="aa" value="添加Note" onclick="AddNote()" />
+<input type="button" name="aa" id="aa" value="选取表格,显示坐标" onclick="test2()"/>
+<input type="button" name="aa" id="aa" value="选取表格,显示ID" onclick="GetSelTablID()"/>
+<input type="button" name="aa" id="aa" value="选取表格,显示2,2内容" onclick="GetCellText()"/>
+<input type="button" name="aa" id="aa" value="显示cell所在行列" onclick="GetSelCell()" />
+<input type="checkbox" name="chkTesting" id="chkTesting" onclick="return TestToogle();"/><label for="chkTesting">正在测试</label></td>
+	</tr>
+</table>
+<script type="text/javascript">
+if (getCookie("Testing")) Spry.$(chkTesting).checked=eval(getCookie("Testing"));
+</script>
+</body>
+</html>

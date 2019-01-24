@@ -1,0 +1,243 @@
+﻿<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<title>Domisoft-PRO-tool</title>
+<!--<script type="text/javascript" src="../SpryAssets/SpryDebug.js"></script>-->
+<script type="text/javascript" src="js/pfcUtils.js"></script>
+<script type="text/javascript" src="js/weblinkpub.js"></script>
+<script type="text/javascript" src="js/domipub.js"></script>
+<script type="text/javascript" src="../SpryAssets/xpath.js"></script>
+<script type="text/javascript" src="../SpryAssets/SpryData.js"></script>
+<script type="text/javascript" src="../SpryAssets/SpryTooltip.js"></script>
+<script type="text/javascript" src="../SpryAssets/SpryDOMUtils.js"></script>
+
+<script type="text/javascript" src="tool1.js"></script>
+<script src="tool3.js" type="text/javascript"></script>
+<script src="../SpryAssets/SpryTabbedPanels.js" type="text/javascript"></script>
+<link href="mstl.css" rel="stylesheet" type="text/css" />
+<link href="SpryAssets/SpryTooltip.css" rel="stylesheet" type="text/css" />
+<link href="../SpryAssets/SpryTabbedPanels.css" rel="stylesheet" type="text/css" />
+</head>
+<body>
+<div id="TabbedPanels1" class="TabbedPanels SpryHiddenRegion" spry:region="ds1">
+		<ul class="TabbedPanelsTabGroup" style="font-size:16px">
+			<li class="TabbedPanelsTab" tabindex="0">General Tools</li>
+			<li class="TabbedPanelsTab" tabindex="0">Batch Apply File Info.</li>
+			<li class="TabbedPanelsTab" tabindex="0">Drawing Tools</li>
+			<li class="bti" onclick="location.href='index.html'" title="Back to index"><img src="img/btn_left.png" align="absmiddle" />Back</li>
+		</ul>
+		<div class="TabbedPanelsContentGroup">
+			<div class="TabbedPanelsContent">
+				<div class="bar">
+				<input type="button" class="bt" onclick="openLayer('getinput')" value="Open" spry:hover="bh" id="tip0"/>
+				<input type="button" class="bt" spry:hover="bh" value="Get List" onclick="Spry.$('tFilter').selectedIndex=0; window.history.go(0)" id="tip1"/>	
+				<input type="button" class="bt" spry:hover="bh" value="Export" onclick="StartExport()" id="tip4"/>
+<!--                <input type="button" class="bt" spry:hover="bh" value="JPEG" onclick="ExportJPG()"/>-->
+				</div>
+			</div>
+			<div class="TabbedPanelsContent">
+				<div class="bar">
+					<input type="button" class="bt" spry:hover="bh" value="Query Data" onclick="StartQuery()" id="tip2"/>
+				<input type="button" class="bt" spry:hover="bh" value="Write" onclick="StartWrite()" id="tip3"/>
+				</div>
+			</div>				
+			<div class="TabbedPanelsContent">
+				<div class="bar">
+					<input type="button" class="bt" spry:hover="bh" value="Release" onclick="ReleaseDrawing()" id="tip5"/>				
+					<input type="button" class="bt" spry:hover="bh" value="PrintPDF" onclick="MassPrintPrep()" id="tip6"/>
+					<!--<input type="button" class="bt" spry:hover="bh" value="test" onclick="CheckTubeOD()" id="tip8"/>-->
+				</div>
+			</div>
+	</div>
+</div>
+<div style="text-align:right; height:25px; width:100%; margin-top:5px">
+<div style="border:#333 1px solid; display:inline">
+	<img src="img/Export.png" width="12" height="12" align="absmiddle" style="padding-left:2px"/>
+	<input type="text" name="textfield" id="textfield" onkeyup="GetSearch(this.value)" style="border:0px;font-size:12px"/>
+</div>
+<div style="border:#fff 1px solid; display:inline; position:relative; top:2px; margin-left:5px">
+	<img src="img/got.png" width="16" height="16" align="absmiddle" />
+	<select name="tFilter" id="tFilter" onchange="viewFilter(this.value)" style="font-size:11px;">
+		<option value="All" selected="selected">All (*.*)</option>
+		<option value="asm">Assembly (*.asm)</option>
+		<option value="prt">Part (*.prt)</option>
+		<option value="drw">Drawing (*.drw)</option>
+	</select>
+</div>
+</div>
+<div class="SpryHiddenRegion">
+	<div class="tc">Batch load documents to current session.</div>
+	<div class="tc">Reload session list</div>
+	<div class="tc">Query from XML you defined</div>
+	<div class="tc">Write query result to files</div>
+	<div class="tc">Export current list to .csv file.</div>
+	<div class="tc">Remove interation version for all drawings in session (For drawing release)</div>
+	<div class="tc">Convert all session drawings into PDF with revision for filename</div>
+</div>
+
+<div id="getinput" style=" width:700px">
+	<script type="text/javascript">Spry.$("getinput").style.display="none"</script>
+<div style=" position:relative; z-index:1001; top:0px; left:675px"><img src="img/close.png" onclick="closeLayer('getinput')" title="取消" class="cl"></div>
+	<div style=" position:relative; top:-25px;">
+	<table width="700" border="0" align="center" cellpadding="0" cellspacing="0">
+		<tr>
+			<td align="center" valign="middle">
+			<textarea name="namelist" id="namelist" style="width:380px;height:395px;border:#333 solid 1px"></textarea></td>
+			<td width="285" valign="top"><br /><br />
+			<span style="font:bold 14px sans-serif;">Batch Open Tool</span>
+				<p style="font-family:Arial; font-size:12px">
+			<strong>Batch load proe documents to current session. </strong><br /><br />Please input file lists on the left (you may copy them from another excel worksheet, and paste here.), and then click OK.</p>
+			  <ul style="list-style:none; margin:0px; padding:0px; cursor:pointer">
+			    <li><input type="radio" name="openFrom" id="FromLocal" value="0"/><label for="FromLocal">open from local disk workspace</label></li>
+				<li><input type="radio" name="openFrom" id="FromServer" value="1" checked="checked" ><label for="FromServer">open from Windchill server</label></li>
+		      </ul>
+				<div style="float:right">
+<select id="fext">
+					<!--<option value="0">auto</option>-->
+					<option value="1" selected="selected">prt</option>
+					<option value="2">asm</option>
+					<option value="3">drw</option>
+				</select>
+			  <input type="button" class="bt" value="OK"  onclick="BatchOpen(Spry.$('namelist').value,Spry.$('fext').value)" /></div></td>
+		</tr>
+	</table>
+	</div>
+</div>
+<div id="geterr">
+	<script type="text/javascript">Spry.$("geterr").style.display="none"</script>
+	<div style="float:left;width:575px;height:25px">
+		<span style="font-family:Arial; font-size:12px; font-weight:bold">Can't find below documents:</span>
+	</div>
+	<div style="float:right"><img src="img/close.png" onclick="window.history.go(0)" title="取消" class="cl"></div>
+	<div>
+	<table width="600" border="0" align="center" cellpadding="0" cellspacing="0">
+		<tr>
+			<td align="center" valign="middle">
+			<textarea name="errlist" readonly="readonly" id="errlist" style="width:590px;height:370px;border:#333 solid 1px;color:#F00"></textarea></td>
+		</tr>
+	</table>
+	</div>
+</div>
+<div id="divload"><script type="text/javascript">Spry.$("divload").style.display="none"</script>
+	<table width="100%" border="0" align="center" cellpadding="0" cellspacing="0">
+		<tr>
+			<td height="200" align="center" scope="col"><p><img src="img/waiting.gif" width="32" height="32" alt="loading..." /></p>
+				<p>Loading ...</p></td>
+		</tr>
+	</table>
+</div>
+<div spry:region="ds1" id="dlist" class="SpryHiddenRegion">
+	<div spry:state="loading">
+		<table width="100%" border="0" align="center" cellpadding="0" cellspacing="0">
+			<tr>
+				<td height="200" align="center" scope="col"><p><img src="img/waiting.gif" width="32" height="32" alt="loading..." /></p>
+					<p>Loading ...</p></td>
+			</tr>
+		</table>
+	</div>
+	<div spry:state="failed">
+		<table width="100%" border="0" align="center" cellpadding="0" cellspacing="0">
+			<tr>
+				<td align="center" scope="col"><img src="img/no.png" width="16" height="16" alt="failed" />Error</td>
+			</tr>
+		</table>
+	</div>
+	<div spry:state="ready" id="ready">
+	<table width="100%" border="0" cellspacing="0" cellpadding="0" id="st">
+	<thead>
+		<tr>
+			<th width="25" align="center" scope="col">#</th>
+			<th width="25" scope="col">&nbsp;</th>
+			<th width="150" align="left" style="cursor:pointer" scope="col" spry:sort="PartNumber">Part Number</th>
+			<th width="250" align="left" scope="col">Common Name</th>
+			<th width="225" align="left" scope="col">Description</th>
+			<th align="center" scope="col">&nbsp;</th>
+		</tr>
+	</thead>
+	<tbody>
+		<tr spry:repeat="ds1" spry:hover="hol" spry:setrow="ds1" ondblclick="openLayer('debox')" spry:select="sel" spry:selectgroup="sg">
+			<td align="center">{ds_RowNumberPlus1}</td>
+			<td align="center">
+			<img spry:if="'{PartNumber}'.indexOf('.prt')>0" src="img/prt.gif">
+			<img spry:if="'{PartNumber}'.indexOf('.asm')>0" src="img/asm.gif">
+			<img spry:if="'{PartNumber}'.indexOf('.drw')>0" src="img/drw.gif">
+			</td>
+			<td align="left">{PartNumber} <img src="img/no.png" align="absmiddle" title="This file has been modified but not saved" spry:if="{IsModified}"></td>
+			<td align="left">{function::lookupCName}</td>
+			<td align="left">{function::lookupDesp}</td>
+			<td align="center"><img src="img/{function::lookupDone}.png" /></td>
+		</tr>
+	</tbody>
+	</table>
+	</div>
+</div>
+<div id="debox" spry:detailregion="ds1">
+	<script type="text/javascript">Spry.$("debox").style.display="none"</script>
+	<div style="float:right; display:inline"><img src="img/close.png" onclick="closeLayer('debox')" title="Close" class="cl"></div>
+	<div style="float:left; display:inline">
+		<input type="button" onclick="openFromSession('{PartNumber}',Spry.$('chkReuseWindow').checked);closeLayer('debox')" value="Open" class="bt" spry:hover="bh" title="Open this document from session"/>
+		<input type="checkbox" name="chkReuseWindow" id="chkReuseWindow" title="Reuse this window to open model" style="display:none"/>
+		<input type="button" onclick="createDrw('{PartNumber}');closeLayer('debox')" value="Draft" class="bt" spry:hover="bh" title="Create a new drawing for this model."/>
+	</div>
+<table width="500" border="0" align="center" cellpadding="0" cellspacing="2">
+	<tr>
+		<td height="25" align="center" colspan="2"><strong>View & Edit</strong>
+		</td>
+	</tr>
+	<tr>
+		<td width="100" height="25">Filename</td>
+		<td><textarea name="PartNumber" class="ib" id="PartNumber" readonly="readonly">{PartNumber}</textarea></td>
+	</tr>
+	<tr>
+		<td width="100" height="50">Common Name</td>
+		<td><textarea name="CommonName" class="ib" id="CommonName" onkeydown="if (!event.ctrlKey) this.className='ib sel'">{CommonName}</textarea></td>
+	</tr>
+	<tr>
+		<td width="100" height="50">Description</td>
+		<td><textarea name="Description" class="ib" id="Description" onkeydown="if (!event.ctrlKey) this.className='ib sel'">{Description}</textarea></td>
+	</tr>
+	<tr>
+		<td width="100" height="25">&nbsp;</td>
+		<td>&nbsp;</td>
+	</tr>
+	<tr>
+		<td width="100" height="25">&nbsp;</td>
+		<td><input type="button" onclick="ModifyPart()" value="OK" class="bt" spry:hover="bh"/>
+		<input type="button" onclick="closeLayer('debox')" value="Cancel" class="bt" spry:hover="bh"/>
+	</td>
+	</tr>
+</table>
+</div>
+<div id="divPrint">
+	<script type="text/javascript">Spry.$("divPrint").style.display="none"</script>
+	<div style="float:right; display:inline"><img src="img/close.png" onclick="closeLayer('divPrint')" title="Close" class="cl"></div>
+<table width="500" border="0" align="center" cellpadding="0" cellspacing="2">
+	<tr>
+		<td height="25" align="center"><strong>PDF Converting Tool</strong></td>
+	</tr>
+	<tr>
+		<td height="200" align="left" valign="top">
+		<hr />
+		<div spry:region="dsPrint" class="SpryHiddenRegion"><ul spry:repeatchildren="dsPrint" style=" margin:0px">
+			<li style="width:124px; height:20px; float:left;">{filename}<img src="img/okicon.png" spry:if="'{status}'=='true'"/></li>
+		</ul></div></td>
+		</tr>
+	<tr>
+		<td height="25" align="center">
+		<div style="border: 1px solid #F7941D; background: #FEEFDA; padding:5px" id="pdfNote">This action will convert all session drawings into PDF. Revision will also be added to filenames. Output files will be located at <strong>#workspaces#</strong>.  The process may overwrite existing files.</div><br />
+		<input name="btnPrint" type="button" class="bt" id="btnPrint" onclick="MassPrint()" value="Start" spry:hover="bh"/>
+		</td>
+		</tr>
+</table>
+</div>
+<div id="ActiveUser"></div>
+<script type="text/javascript">
+
+//try{
+//	Spry.Debug.enableTrace=false;
+//	var GetActiveUser=Spry.Utils.updateContent('ActiveUser','../ANNC/ActiveUser.asp?uck='+now());
+//}catch(e){void(0)};
+</script>
+</body>
+</html>

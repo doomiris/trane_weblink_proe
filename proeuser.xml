@@ -1,0 +1,345 @@
+<?xml version="1.0" encoding="UTF-8" standalone="yes"?>
+<MDM xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
+	<item>
+		<ID>0</ID>
+		<logon>corp\gplan</logon>
+		<fullname>Lan, Dominic Gong Peng</fullname>
+		<email>gplan@irco.com</email>
+	</item>
+	<item>
+		<ID>1</ID>
+		<logon>corp\tycai</logon>
+		<fullname>Cai, Tony Yuan Jia</fullname>
+		<email>tycai@irco.com</email>
+	</item>
+	<item>
+		<ID>2</ID>
+		<logon>corp\lbacd</logon>
+		<fullname>Chai, Cindy Yu Jun</fullname>
+		<email>cindyyujun.chai@irco.com</email>
+	</item>
+	<item>
+		<ID>3</ID>
+		<logon>corp\chenmz</logon>
+		<fullname>Chen, Michael Zhi Qiang</fullname>
+		<email>MichaelZhiqiang.Chen@irco.com</email>
+	</item>
+	<item>
+		<ID>4</ID>
+		<logon>corp\chenrl</logon>
+		<fullname>Chen, Rena Lei</fullname>
+		<email>renalei.chen@irco.com</email>
+	</item>
+	<item>
+		<ID>5</ID>
+		<logon>corp\bxfeng</logon>
+		<fullname>Feng, Ben Xiao Ming</fullname>
+		<email>bxfeng@irco.com</email>
+	</item>
+	<item>
+		<ID>6</ID>
+		<logon>corp\larft</logon>
+		<fullname>Feng, Herman Feng</fullname>
+		<email>hermanfeng.feng@irco.com</email>
+	</item>
+	<item>
+		<ID>7</ID>
+		<logon>corp\cxgu</logon>
+		<fullname>Gu, Chris Xiao Ran</fullname>
+		<email>cxgu@irco.com</email>
+	</item>
+	<item>
+		<ID>8</ID>
+		<logon>corp\lbaat</logon>
+		<fullname>Han, Jack Zhi Xuan</fullname>
+		<email>jackzhixuan.han@irco.com</email>
+	</item>
+	<item>
+		<ID>9</ID>
+		<logon>corp\mclee</logon>
+		<fullname>Lee, Mark Chunming</fullname>
+		<email>mclee@irco.com</email>
+	</item>
+	<item>
+		<ID>10</ID>
+		<logon>corp\lbets</logon>
+		<fullname>Li, Steve Fu Nian</fullname>
+		<email>funian.li@irco.com</email>
+	</item>
+	<item>
+		<ID>11</ID>
+		<logon>corp\lipp</logon>
+		<fullname>Li, Ponpon Peng</fullname>
+		<email>ponponpeng.li@irco.com</email>
+	</item>
+	<item>
+		<ID>12</ID>
+		<logon>corp\vjlin</logon>
+		<fullname>Lin, Vicky Jian Min</fullname>
+		<email>vjlin@irco.como</email>
+	</item>
+	<item>
+		<ID>13</ID>
+		<logon>corp\kjling</logon>
+		<fullname>Ling, Kevin Jiang</fullname>
+		<email>kjling@irco.com</email>
+	</item>
+	<item>
+		<ID>14</ID>
+		<logon>corp\ayliu</logon>
+		<fullname>Liu, Alex Yang</fullname>
+		<email>ayliu@irco.com</email>
+	</item>
+	<item>
+		<ID>15</ID>
+		<logon>corp\lzsheng</logon>
+		<fullname>Sheng, Levy Zheng</fullname>
+		<email>lzsheng@irco.com</email>
+	</item>
+	<item>
+		<ID>16</ID>
+		<logon>corp\lbaar</logon>
+		<fullname>Tian, Nick Dong</fullname>
+		<email>nickdong.tian@irco.com</email>
+	</item>
+	<item>
+		<ID>17</ID>
+		<logon>corp\wangay1</logon>
+		<fullname>Wang, Andy Yun Yun</fullname>
+		<email>AndyYunYun.Wang@irco.com</email>
+	</item>
+	<item>
+		<ID>18</ID>
+		<logon>corp\ajywang</logon>
+		<fullname>Wang, Audrey Jian Yao</fullname>
+		<email>ajywang@irco.com</email>
+	</item>
+	<item>
+		<ID>19</ID>
+		<logon>corp\hzwang</logon>
+		<fullname>Wang, Henry Zhi Feng</fullname>
+		<email>hwang@irco.com</email>
+	</item>
+	<item>
+		<ID>20</ID>
+		<logon>corp\xswang</logon>
+		<fullname>Wang, Xiao Song</fullname>
+		<email>xswang@irco.com</email>
+	</item>
+	<item>
+		<ID>21</ID>
+		<logon>corp\jwwu</logon>
+		<fullname>Wu, Jason Wen Jie</fullname>
+		<email>jwwu@irco.com</email>
+	</item>
+	<item>
+		<ID>22</ID>
+		<logon>corp\bbxu</logon>
+		<fullname>Xu, Bill Bing</fullname>
+		<email>bbxu@irco.com</email>
+	</item>
+	<item>
+		<ID>23</ID>
+		<logon>corp\jlzhou</logon>
+		<fullname>Zhou, Junny Li Hua</fullname>
+		<email>jlzhou@irco.com</email>
+	</item>
+	<item>
+		<ID>24</ID>
+		<logon>corp\pfzhou</logon>
+		<fullname>Zhou, Peter Fei Ou</fullname>
+		<email>pfzhou@irco.com</email>
+	</item>
+	<item>
+		<ID>25</ID>
+		<logon>corp\lbjtv</logon>
+		<fullname>Zhuang, Phyonna Wei</fullname>
+		<email>phyonnawei.zhuang@irco.com</email>
+	</item>
+	<item>
+		<ID>26</ID>
+		<logon>corp\lbkqv</logon>
+		<fullname>Yao, Youth Zhi</fullname>
+		<email>youthzhi.yao@irco.com</email>
+	</item>
+	<item>
+		<ID>27</ID>
+		<logon>corp\lbace</logon>
+		<fullname>Zhou, Roger Zhi Jun</fullname>
+		<email>rogerzhijun.zhou@irco.com</email>
+	</item>
+	<item>
+		<ID>28</ID>
+		<logon>corp\mpwang</logon>
+		<fullname>Wang, Michael Ping</fullname>
+		<email>mpwang@irco.com</email>
+	</item>
+	<item>
+		<ID>29</ID>
+		<logon>corp\hyzhao</logon>
+		<fullname>Zhao, Helen Yan Min</fullname>
+		<email>hyzhao@irco.com</email>
+	</item>
+	<item>
+		<ID>30</ID>
+		<logon>corp\laeuj</logon>
+		<fullname>Gilbertson, Corey</fullname>
+		<email>cgilbertson@irco.com</email>
+	</item>
+	<item>
+		<ID>31</ID>
+		<logon>corp\ladcm</logon>
+		<fullname>Meyers, Chad</fullname>
+		<email>cmeyers@irco.com</email>
+	</item>
+	<item>
+		<ID>32</ID>
+		<logon>corp\lblks</logon>
+		<fullname>Li, Eva Ju</fullname>
+		<email>ju.li@irco.com</email>
+	</item>
+	<item>
+		<ID>33</ID>
+		<logon>corp\lblnp</logon>
+		<fullname>Xu, Belinda Yun</fullname>
+		<email>yun.xu@irco.com</email>
+	</item>
+	<item>
+		<ID>34</ID>
+		<logon>corp\laarz</logon>
+		<fullname>Fromm, Dale</fullname>
+		<email>dfromm@irco.com</email>
+	</item>
+	<item>
+		<ID>35</ID>
+		<logon>corp\lblnq</logon>
+		<fullname>Lu, Jason Ji Tao</fullname>
+		<email>jitao.lu@irco.com</email>
+	</item>
+	<item>
+		<ID>36</ID>
+		<logon>corp\lbiqs</logon>
+		<fullname>Orr, Joey</fullname>
+		<email>joey.orr1@irco.com</email>
+	</item>
+	<item>
+		<ID>37</ID>
+		<logon>corp\lbjsk</logon>
+		<fullname>Zheng, Stefanie Yi</fullname>
+		<email>StefanieYi.Zheng@irco.com</email>
+	</item>
+	<item>
+		<ID>38</ID>
+		<logon>corp\lblbv</logon>
+		<fullname>Yuan, Evan Quan</fullname>
+		<email>Tonyquan.Yuan@irco.com</email>
+	</item>
+	<item>
+		<ID>39</ID>
+		<logon>corp\lblzv</logon>
+		<fullname>Wan, Ailsa Wang Shun</fullname>
+		<email>wangshun.wang@irco.com</email>
+	</item>
+	<item>
+		<ID>40</ID>
+		<logon>corp\lblxp</logon>
+		<fullname>Han, Kylin Qi Lin</fullname>
+		<email>qilin.han@irco.com</email>
+	</item>
+	<item>
+		<ID>41</ID>
+		<logon>corp\jxzhu</logon>
+		<fullname>Zhu, Jack Xiao Ye</fullname>
+		<email>jxzhu@irco.com</email>
+	</item>
+	<item>
+		<ID>42</ID>
+		<logon>corp\lbnkm</logon>
+		<fullname>Wang, Qian Jie</fullname>
+		<email>qianjie.wang@irco.com</email>
+	</item>
+	<item>
+		<ID>43</ID>
+		<logon>corp\lbkha</logon>
+		<fullname>Zhong, Pingle Jun Ping</fullname>
+		<email>PingleJunPing.zhong@irco.com</email>
+	</item>
+	<item>
+		<ID>44</ID>
+		<logon>corp\ayshi</logon>
+		<fullname>Shi, Angela Ying</fullname>
+		<email>ayshi@irco.com</email>
+	</item>
+	<item>
+		<ID>45</ID>
+		<logon>corp\lbkmj</logon>
+		<fullname>Liu, Susan Dan Ping</fullname>
+		<email>danping.liu@irco.com</email>
+	</item>
+	<item>
+		<ID>46</ID>
+		<logon>corp\lbedc</logon>
+		<fullname>Li, Leo Jian Hua</fullname>
+		<email>LeoJianHua.Li@irco.com</email>
+	</item>
+	<item>
+		<ID>47</ID>
+		<logon>corp\lblju</logon>
+		<fullname>Yu, Connie Wei</fullname>
+		<email>Wei.yu@irco.com</email>
+	</item>
+	<item>
+		<ID>48</ID>
+		<logon>corp\lbjnh</logon>
+		<fullname>Shao, Derick Qian Jin</fullname>
+		<email>DerickQianJin.Shao@irco.com</email>
+	</item>
+	<item>
+		<ID>49</ID>
+		<logon>corp\lbedd</logon>
+		<fullname>Hong, Mitchell Ming Xing</fullname>
+		<email>MitchellMingXing.Hong@irco.com</email>
+	</item>
+	<item>
+		<ID>50</ID>
+		<logon>corp\jpyuan</logon>
+		<fullname>Yuan, Jessica Ping</fullname>
+		<email>jpyuan@irco.com</email>
+	</item>
+	<item>
+		<ID>51</ID>
+		<logon>corp\sxqzhuang</logon>
+		<fullname>Zhuang, Sam Xi Quan</fullname>
+		<email>sxqzhuang@irco.com</email>
+	</item>
+	<item>
+		<ID>52</ID>
+		<logon>corp\lbbfb</logon>
+		<fullname>Mao, Mike Wen Jun</fullname>
+		<email>mikewenjun.mao@irco.com</email>
+	</item>
+	<item>
+		<ID>53</ID>
+		<logon>corp\ircdjo</logon>
+		<fullname>Cao, John Lu</fullname>
+		<email>JohnLu.Cao@irco.com</email>
+	</item>
+	<item>
+		<ID>54</ID>
+		<logon>corp\lbolb</logon>
+		<fullname>Chen, Ya Li</fullname>
+		<email>YaLi.Chen@irco.com</email>
+	</item>
+	<item>
+		<ID>55</ID>
+		<logon>corp\ircbmc</logon>
+		<fullname>Pang, Hill Hai Hong</fullname>
+		<email>HillHaiHong.Pang@irco.com</email>
+	</item>
+	<item>
+		<ID>56</ID>
+		<logon>corp\lbljw</logon>
+		<fullname>Zhang, Amy Xiao Wen</fullname>
+		<email>XiaoWen.Zhang@irco.com</email>
+	</item>
+</MDM>

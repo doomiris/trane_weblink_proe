@@ -1,0 +1,44 @@
+@charset "UTF-8";
+
+.CollapsiblePanel {
+	margin: 0px;
+	padding: 0px;
+	border-left: solid 1px #CCC;
+	border-right: solid 1px #999;
+	border-top: solid 1px #999;
+	border-bottom: solid 1px #CCC;
+}
+.CollapsiblePanelTab {
+	font: bold 12px sans-serif;
+	background-color: #DDD;
+	border-bottom: solid 1px #CCC;
+	margin: 0px;
+	padding: 2px;
+	cursor: pointer;
+	-moz-user-select: none;
+	-khtml-user-select: none;
+}
+.CollapsiblePanelContent {
+	margin: 0px;
+	padding: 0px;
+}
+.CollapsiblePanelTab a {
+	color:#000;
+	text-decoration: none;
+}
+.CollapsiblePanelOpen .CollapsiblePanelTab {
+	background-image:url('../img/button2.png');  
+	color:#FFF;
+}
+.CollapsiblePanelClosed .CollapsiblePanelTab {
+	color:#999;
+}
+.CollapsiblePanelTabHover,  .CollapsiblePanelOpen .CollapsiblePanelTabHover {
+	background-image:url('../img/button.png');  
+	color:#000;
+}
+.CollapsiblePanelTabHover,  .CollapsiblePanelClosed .CollapsiblePanelTabHover {
+	color:#000;
+}
+.CollapsiblePanelFocused .CollapsiblePanelTab {
+}

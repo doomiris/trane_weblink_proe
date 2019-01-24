@@ -1,0 +1,100 @@
+@charset "utf-8";
+body {
+	font-family: Arial;
+	font-size: 12px;
+	color: #000;
+	background-color: #FFF;
+}
+.SpryHiddenRegion {
+	visibility: hidden;
+}
+#dlist {
+	font-family: Arial;
+	font-size: 12px;
+}
+#dlist th {
+	border-bottom: 1px solid #09C;
+/*	padding-top: 10px;*/
+	padding-bottom: 2px;
+}
+#dlist td {
+	padding-top: 2px;
+	padding-bottom: 2px;
+}
+.hol {
+	background-color: #F96;
+	cursor: default;
+}
+.bt, .bh {
+	background-image: url(img/btface.gif);
+	height: 25px;
+	width: 80px;
+	font-size: 11px;
+	color: #FFF;
+	font-family: Tahoma;
+	font-weight: bold;
+	border: 0px solid #FFF;	!important
+	cursor: pointer;
+}
+.bh {
+	background-image: url(img/btshade.gif);
+}
+.bar {
+	height: 30px;
+	padding: 10px;
+}
+#bgdiv {
+	background-color: #000;
+	height: 100%;
+	width: 100%;
+	position: absolute;
+	z-index: 98;
+	left: 0px;
+	top: 0px;
+	filter: Alpha(Opacity=50);
+	opacity: 0.5;
+}
+.boxdiv {
+	font-size: 12px;
+	color: #000;
+	background-color: #FFF;
+	position: absolute;
+	z-index: 99;
+	height: 400px;
+	width: 600px;
+	border: 1px solid #900;
+	padding: 5px;
+}
+.cl{
+	cursor: pointer;
+}
+.ib {
+	height: 50px;
+	width: 350px;
+	font-family: Arial;
+}
+.sel {
+	background-color: #699;
+}
+.tc {
+	padding: 10px;
+	width: 200px;
+	background-color: #FFC;
+	border: 1px solid #333;
+}
+.bti {
+	float: right;
+	padding-top:5px;
+	font: bold 0.7em sans-serif;
+	cursor: pointer;
+	list-style-type: none;
+}
+.hoztip {
+	background-color: #FFC;
+	border: 1px dashed #030;
+	padding: 5px;
+	margin-top: 5px;
+	margin-bottom: 5px;
+	cursor: default;
+	color: #030;
+}

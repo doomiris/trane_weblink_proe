@@ -1,0 +1,197 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<title>Update History</title>
+<style type="text/css">
+body {
+	font-family: Arial, Helvetica, sans-serif;
+}
+ul li {
+	font-weight: bold;
+	list-style-type: none;
+	line-height: 5em;
+}
+ol li {
+	font-weight: normal;
+	list-style-type: circle;
+	line-height: normal;
+}
+.fa {
+	color: #F00;
+}
+.fi {
+	color: #C60;
+}
+.ff {
+	color: #060;
+}
+.bt {
+	display:inline;
+	width:16px;
+	height:16px;
+	border:0px;
+}
+</style>
+</head>
+
+<body>
+<table width="800" border="0" cellspacing="0" cellpadding="0">
+	<tr>
+		<td>
+		<input type="text" class="bt" style="background-color:#f00" /> 
+		Function Add
+		<input type="text" class="bt" style="background-color:#c60" /> 
+		Function Improve
+		<input type="text" class="bt" style="background-color:#060" /> Bug Fix
+		</td>
+	</tr>
+</table>
+<ul><li></li>
+	<li>v1.4 beta 2011-11-22	</li>
+	<ol>
+		<li class="fa">TBM: new function, note user to copy title block information when working in multi-sheets drawings.</li>
+	</ol>
+	<li>v1.4 beta 2011-11-21 </li>
+	<ol>
+		<li class="fa">Session Viewer: PDF Print now uses WF5 API, works in both 64-bit and 32-bit mode. Revision number will be added to filename at the mean time.</li>
+		<li class="fi">Session Viewer: Remove Add Rev function.</li>
+		<li class="fi">TBM: again, allow user modify revision number, code is simplified.</li>
+	</ol>
+	<li>v1.3 beta 2011-10-25 </li>
+	<ol>
+		<li class="fi">Drawing Table Helper: now uses Excel screen value instead of excatly value.</li>
+	</ol>
+	<li>v1.3 beta 2011-10-18
+</li>
+</ul>
+<ul>
+	<ol>
+		<li class="fa">TBM: support GB template</li>
+		<li class="fi">Sheet Mgr: support GB template</li>
+		<li class="fa">new tool: Drawing Table Helper</li>
+	</ol>
+	<li>v1.2 beta 2011-7-27
+		<ol>
+			<li class="fi">Session Viewer: new method to get session models (fix long string error)</li>
+			<li class="fa">Framework: a friendly error page will show when a new user open this site.</li>
+			<li class="fi">TBM: add button to copy common name string.</li>
+		</ol>
+	</li>
+	
+	<li>v1.2 beta 2011-6-21
+		<ol>
+			<li class="ff">Framework: fix a bug that a Spry error shows under certain IE environment.</li>
+		</ol>
+	</li>
+	
+	<li>V1.2 beta 2011-5-30
+		<ol>
+			<li class="fi">Session Viewer: new interface for PDF print &amp; PDF adding revision</li>
+		</ol>
+	</li>
+	
+	<li>V1.2 beta 2011-5-16
+		<ol>
+			<li class="fi">Session Viewer: new method to hold session list without temporary file.</li>
+			<li class="ff">Session Viewer: some record has mess code, add function to avoid it (still not know the reason).</li>
+		</ol>
+	</li>
+	
+	<li>V1.2 beta 2011-5-12
+		<ol>
+			<li class="fi">Session Viewer: batch open now have only two options to open from, local side or server side. If you select &quot;open from server&quot;, the add-in will open from your windchill private workspace first, then common space (current product).</li>
+			<li class="ff">Session Viewer: fix bug that the page won't reload when closing a batch open error list window.</li>
+		</ol>
+	</li>
+	
+	<li>V1.2 beta 2011-4-29
+		<ol>
+			<li class="fa">ES Helper: add function to load ES data from other drawing (in session)</li>
+		</ol>
+	</li>
+	
+	<li>V1.2 beta 2011-4-26
+		<ol>
+			<li class="fi">ES Helper: core code redesign</li>
+			<li class="fi">ES Helper: now the page load current ES from drawing first.</li>
+			<li class="fi">ES Helper: more smooth when edit a cell (remove additional buttons)</li>
+			<li class="fi">Format Mgr: try to retrieve format file from session, then workspace, then common space. this sequence would benefit applying speed.</li>
+			<li class="fi">Format Mgr: use new frame work of ES Helper, proper table will be applied when you change format from B to others, vice versa.</li>
+		</ol>
+	</li>
+	
+	<li>V1.1 beta 2011-4-22
+		<ol>
+			<li class="fi">TBM: common name &amp; description are read-only now, unless user enable the checkbox</li>
+		</ol>
+	</li>
+	
+	<li>V1.1 beta 2011-4-21
+		<ol>
+			<li class="ff">TBM: fix a bug that will cause TBM crash (due to Description definition was removed from title block table manually)</li>
+		</ol>
+	</li>
+	
+	<li>V1.1 beta 2011-4-19
+		<ol>
+			<li class="ff">TBM: fix a PROE bug: when  adding the second line of Description  with the first line blank, the second line will take the first place on drawing.....</li>
+			<li class="fa">ES Helper: add control to switch between regions</li>
+			<li class="fi">ES Helper: add charmes	ES database</li>
+		</ol>
+	</li>
+	
+	<li>V1.1 beta 2011-4-13	</li>
+	<ol>
+		<li class="ff">Session viewer: fix bug when creating drawing for such  model which has short file name.</li>
+		<li class="ff">TBM: fix a PROE bug that PROE doesn't identify a modification if you just modify a model's common name</li>
+		<li class="ff">TBM: fix a bug that document won't dirty when modify a drawing's version</li>
+	</ol>
+	<li>V1.1 beta 2011-4-1
+	</li>
+</ul>
+<ul>
+	<ol>
+		<li class="ff">Session viewer: fix bug when handling a non-model drawing.</li>
+	</ol>
+	<li>V 1.1 beta 2011-3-30
+		<ol>
+			<li class="ff">TBM: fix bugs when setting common name &amp; description in model mode</li>
+			<li class="fi">TBM: break link function improve</li>
+			<li class="fi">ES Helper: works in drawings with more than one sheets</li>
+			<li class="fi">Sheet Format Mgr: works in drawings with more than one sheets</li>
+		</ol>
+	</li>
+	
+	<li>V 1.1 beta 2011-3-28
+		<ol>
+			<li class="fa">Notes lib symbol</li>
+			<li class="fa">Function to help change sheet format</li>
+			<li class="fi">TBM: core code re-designed</li>
+			<li class="fi">TBM: revision control by TBM only</li>
+			<li class="fi">TBM: works in drawings with more than one sheets.</li>
+			<li class="fa">TBM: add function to change common name without update windchill.</li>
+			<li class="fa">Session viewer: add function to open document from session</li>
+			<li class="fa">Session viewer: add function to add Revision numbers to PDF filename</li>
+			<li class="fa">Session viewer: add function to batch print PDF</li>
+			<li class="fa">Session viewer: add function to create drawing from session model</li>
+			<li class="fa">Session viewer: add filter function</li>
+			<li class="ff">Session viewer: fix bug when downloading from common space</li>
+			<li class="ff">ES helper: fix bug ES list too long</li>
+		</ol>
+	</li>
+	<li>V 1.0 beta 2011-1-17 
+		<ol>
+			<li>Release with 3 component:
+				<ol>
+					<li>Session Viewer</li>
+					<li>ES Helper</li>
+					<li>Title Block Manager</li>
+				</ol>
+			</li>
+			<li>For function introducing, please refer to DOC folder</li>
+		</ol>
+	</li>
+</ul>
+</body>
+</html>

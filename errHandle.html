@@ -1,0 +1,113 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<!--<script type="text/javascript" src="../SpryAssets/SpryDOMUtils.js"></script>-->
+<!--<script type="text/javascript" src="../SpryAssets/SpryURLUtils.js"></script>-->
+<title>无标题文档</title>
+<style type="text/css">
+#etip {
+	font-size: 20px;
+	color: #900;
+	font-family: Tahoma, Geneva, sans-serif;
+}
+#DET ol li img {
+	vertical-align: top;
+	margin: 10px;
+}
+#DET ol li {
+	margin-top: 10px;
+	margin-bottom: 10px;
+}
+body {
+	font-family: Tahoma, Geneva, sans-serif;
+	font-size: 16px;
+}
+#DET strong {
+	color: #036;
+}
+.divhide{
+	display:none;
+}
+.box {
+	padding: 10px;
+	margin-top: 10px;
+	margin-bottom: 10px;
+	border: 2px dotted #666;
+}
+</style>
+
+</head>
+
+<body>
+<div id="etip">
+	<p><img src="img/warning.png" width="48" height="48" align="absmiddle" />Your Pro/E may not be properly configurated to use a Pro/Web.Link tool.</p>
+
+</div>
+<div class="box">
+	<p><strong>Please Check: </strong></p>
+	<ol id="cs">
+		<li class="divhide">You are NOT accessing previous page through a Pro/E embeded web browser.</li>
+		<li class="divhide">Your Pro/E been configured as NOT allowing Pro/Web.Link scripting.</li>
+		<li class="divhide">Your Internet security setting allows local scripting and ActiveX.</li>
+	</ol>
+</div>
+<div class="box">
+	<p><strong>For new users: </strong></p>
+	<ol>
+		<li>Please download this ZIP file: [<a href="http://shahns32.corp.irco.com/domisoft/SetupScript.zip">SetupScript.zip</a>]</li>
+		<li>Extract and run the <em>SetupScript.cmd</em> inside.</li>
+		<li>Restart Pro/E</li>
+	</ol>
+</div>
+<!--<div class="box">
+	<p><strong>Below table shows whether Pro/Web.link tool is compatible in a certain envirenment.</strong></p>
+	<table width="800" border="0" cellspacing="1" cellpadding="0" bgcolor="#000000">
+		<tr>
+			<td height="25" align="center" valign="middle" bgcolor="#FFFFFF">&nbsp;</td>
+			<td align="center" valign="middle" bgcolor="#FFFFFF">Pro/E Wildfire 3.0 32-bit</td>
+			<td align="center" valign="middle" bgcolor="#FFFFFF">Pro/E Wildfire 3.0 64-bit</td>
+		</tr>
+		<tr>
+			<td height="25" align="center" valign="middle" bgcolor="#FFFFFF">Windows XP 32-bit</td>
+			<td align="center" valign="middle" bgcolor="#FFFFFF"><img src="img/accept.png" width="24" height="24" /></td>
+			<td align="center" valign="middle" bgcolor="#FFFFFF">N/A</td>
+		</tr>
+		<tr>
+			<td height="25" align="center" valign="middle" bgcolor="#FFFFFF">Windows XP 64-bit</td>
+			<td align="center" valign="middle" bgcolor="#FFFFFF"><img src="img/accept.png" alt="" width="24" height="24" /></td>
+			<td align="center" valign="middle" bgcolor="#FFFFFF"><img src="img/accept.png" alt="" width="24" height="24" /></td>
+		</tr>
+		<tr>
+			<td height="25" align="center" valign="middle" bgcolor="#FFFFFF">Windows 7 64-bit</td>
+			<td align="center" valign="middle" bgcolor="#FFFFFF"><img src="img/accept.png" alt="" width="24" height="24" /></td>
+			<td align="center" valign="middle" bgcolor="#FFFFFF"><img src="img/delete.png" width="24" height="24" /></td>
+		</tr>
+	</table>
+</div>-->
+<div class="box">
+	<p>If you still have trouble on this tool, please contact <a href="mailto:gplan@irco.com">gplan@irco.com</a></p>
+</div>
+<script type="text/javascript">
+function isProEEmbeddedBrowser(){
+	if (top.external){
+		try{
+			if (top.external.ptc) return true;
+		}catch(e){return false}
+	}
+	return false;
+}
+function isProeEnableScript(){
+	try{
+		var glob=new ActiveXObject ("pfc.MpfcCOMGlobal");
+	}catch(e){return false;};
+	try{
+		if (glob.GetScript()) return true;
+	}catch(e){return false}
+	return false;
+}
+if (!isProEEmbeddedBrowser()) document.getElementById("cs").childNodes[0].className="";
+else if (!isProeEnableScript()) document.getElementById("cs").childNodes[1].className="";
+</script>
+</body>
+</html>

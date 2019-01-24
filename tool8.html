@@ -1,0 +1,112 @@
+﻿<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" xmlns:ice="http://ns.adobe.com/incontextediting">
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<title>无标题文档</title>
+<script type="text/javascript" src="js/pfcUtils.js"></script>
+<script type="text/javascript" src="js/weblinkpub.js"></script>
+<script type="text/javascript" src="js/domipub.js"></script>
+<script type="text/javascript" src="../SpryAssets/SpryData.js"></script>
+<script src="../SpryAssets/SpryTabbedPanels.js" type="text/javascript"></script>
+<script type="text/javascript">
+var ds1 = new Spry.Data.DataSet();
+var paraSet=[];
+var mdl=Session.CurrentModel;
+var pml=mdl.ListParams();
+
+for (i=0; i<pml.Count; i++){
+	paraSet.push({
+		name:pml.Item(i).Name,
+		value:getValue(pml.Item(i).Value),
+		acc:pml.Item(i).IsDesignated 
+	});
+}
+function getValue(para){
+	switch (para.discr){
+		case 0:	return para.StringValue;
+		case 1:	return para.IntValue;
+		case 2:	return para.BoolValue;
+		case 3:	return para.DoubleValue;
+	}
+}
+ds1.setDataFromArray(paraSet);
+function modify(paraId,paraName,paraType,paraValue){
+	//b
+}
+</script>
+<link href="../SpryAssets/SpryTabbedPanels.css" rel="stylesheet" type="text/css" />
+</head>
+
+<body>
+
+<div spry:region="ds1">
+<table width="100%" border="1">
+  <tr>
+    <td>name</td>
+    <td>value</td>
+    <td>Designated</td>
+  </tr>
+  <tr spry:repeat="ds1" spry:setrow="ds1">
+    <td>{name}</td>
+    <td>{value}</td>
+    <td>{acc}</td>
+  </tr>
+</table>
+</div>
+<div spry:detailregion="ds1">
+<table width="100%" border="1">
+  <tr>
+    <td><input type="text" value="{name}" /></td>
+    <td><input name="textfield2" type="text" id="textfield2" value="{value}" /></td>
+    <td><input type="text" name="textfield3" id="textfield3" /></td>
+    <td><input type="hidden" value="{ds_RowID}" /><input type="button" name="button" id="button" value="按钮" /></td>
+  </tr>
+</table>
+</div>
+<!--<div id="ActiveUser"></div>-->
+<div>
+  <div id="TabbedPanels1" class="TabbedPanels">
+    <ul class="TabbedPanelsTabGroup">
+      <li class="TabbedPanelsTab" tabindex="0">String</li>
+      <li class="TabbedPanelsTab" tabindex="0">Integer</li>
+      <li class="TabbedPanelsTab" tabindex="0">Double</li>
+      <li class="TabbedPanelsTab" tabindex="0">Boolean</li>
+    </ul>
+    <div class="TabbedPanelsContentGroup">
+      <div class="TabbedPanelsContent">
+        <p>Name:
+          <input type="text" name="paraNameAdd" id="paraNameAdd" />
+        </p>
+        <p>Value:
+          <textarea name="paraStringValueAdd" id="paraStringValueAdd" cols="45" rows="5"></textarea>
+        </p>
+      </div>
+      <div class="TabbedPanelsContent">
+        <p>Name:
+          <input type="text" name="paraNameAdd" id="paraNameAdd" />
+        </p>
+        <p>Value:
+          <input type="text" name="paraIntValueAdd" id="paraIntValueAdd" />
+        </p>
+      </div>
+      <div class="TabbedPanelsContent">
+        <p>Name:
+          <input type="text" name="paraNameAdd" id="paraNameAdd" />
+        </p>
+        <p>Value:
+          <input type="text" name="paraDblValueAdd" id="paraDblValueAdd" />
+        </p>
+      </div>
+      <div class="TabbedPanelsContent">
+        <p>Name:
+          <input type="text" name="paraNameAdd" id="paraNameAdd" />
+        </p>
+        <p>Value: 
+          <input type="checkbox" name="paraBooleanValueAdd" id="paraBooleanValueAdd" />
+        </p>
+      </div>
+    </div>
+  </div>
+</div>
+</body>
+</html>

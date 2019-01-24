@@ -1,0 +1,154 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<title>Web.Link Tools</title>
+<style type="text/css">
+<!--
+a:link, a:visited  {
+	text-decoration: none;
+	color: #030;
+}
+a:hover,a:active {
+	text-decoration: underline;
+	color: #F00;
+}
+#ActiveUser a:link,#ActiveUser a:visited {
+	color:#fff;
+}
+body {
+	margin: 0px;
+	padding: 0px;
+	font-size: 12px;
+	background-color: #fff;
+	font-family: Arial, Helvetica, sans-serif;
+}
+.lb,.lh {
+	margin: 5px;
+	height: 128px;
+	width: 128px;
+	float: left;
+	cursor: pointer;
+	color: #666;
+	background-image: url(img/crbt_sky.png);
+	background-repeat: no-repeat;
+	background-position: center center;
+}
+.lh {
+	background-image: url(img/crbt_green.png);
+}
+.beta {
+	background-image: url(img/crbt_red.png);
+}
+.btin {
+	font-weight: bold;
+	color: #030;
+	margin-top: 15px;
+	padding-left: 15px;
+}
+.btip {
+	width: 144px;
+	height: 65px;
+	background-image: url(img/tipbg_5.PNG);
+	background-repeat: no-repeat;
+	background-position: center center;
+	padding-top: 15px;
+	padding-left: 10px;
+}
+.gp {
+	background-color: #EEE;
+	border: 1px solid #333;
+	margin: 5px;
+}
+.bv {
+	margin-top: 80px;
+	text-align: right;
+	font-size: 11px;
+	color: #333;
+	padding-right: 8px;
+}
+.lf {
+	height: 400px;
+	margin: 0px;
+	padding: 0px;
+}
+.tt {
+	font-size: 25px;
+	color: #fff;
+}
+-->
+</style>
+<!--<script type="text/javascript" src="js/pfcUtils.js"></script>
+<script type="text/javascript" src="js/weblinkpub.js"></script>-->
+<script type="text/javascript" src="../SpryAssets/xpath.js"></script>
+<script type="text/javascript" src="../SpryAssets/SpryData.js"></script>
+<script type="text/javascript" src="../SpryAssets/SpryDOMUtils.js"></script>
+<script type="text/javascript" src="js/domipub.js"></script>
+<script type="text/javascript">
+var ds1 = new Spry.Data.XMLDataSet("orgdata.xml", "proe/Define");
+</script>
+</head>
+
+<body>
+<!--[if lt IE 7]>
+<div style='border: 1px solid #F7941D; background: #FEEFDA; text-align: center; clear: both; height: 75px; position: relative;'><div style='position: absolute; right: 3px; top: 3px; font-family: courier new; font-weight: bold;'><a href='#' onclick='javascript:this.parentNode.parentNode.style.display="none"; return false;'><img src='http://www.ie6nomore.com/files/theme/ie6nomore-cornerx.jpg' style='border: none;' alt='Close this notice'/></a></div><div style='width: 640px; margin: 0 auto; text-align: left; padding: 0; overflow: hidden; color: black;'><div style='width: 75px; float: left;'><img src='http://www.ie6nomore.com/files/theme/ie6nomore-warning.jpg' alt='Warning!'/></div><div style='width: 275px; float: left; font-family: Arial, sans-serif;'><div style='font-size: 14px; font-weight: bold; margin-top: 12px;'>You are using an outdated browser</div><div style='font-size: 12px; margin-top: 6px; line-height: 12px;'>For a better experience using this site, please upgrade to a modern web browser.</div></div><div style='width: 75px; float: left;'><a href='http://www.microsoft.com/windows/internet-explorer/default.aspx' target='_blank'><img src='http://www.ie6nomore.com/files/theme/ie6nomore-ie8.jpg' style='border: none;' alt='Get Internet Explorer 8'/></a></div></div></div>
+<![endif]-->
+<div style="width:100%; height:106px; margin:0px; padding:0px; background-image:url(img/header.jpg)">
+	<div style="position:relative; top:30px;width:100%; height:45px; overflow:hidden" id="Annc"></div>
+	<div style="position:relative; top:30px;left:15px; width:300px"><strong class="tt">Add-ins Index</strong></div>
+	<div id="ActiveUser" style="display:inline;float:right;color:#FFF;padding-top:13px;"></div>
+</div>
+<div class="gp">
+<div style="padding:5px; margin:5px; border:none; background-image:url(img/transbg.png); width:200px"><img src="img/run.png" width="16" height="16" align="absmiddle" />Click below items to start a tool: </div>
+<div class="lf" spry:region="ds1" id="btgroup">
+	<div class="lb" spry:hover="lh" onclick="location.href='tool1.html'">
+		<div class="btin">Session Viewer</div>
+		<div class="bv">2011-11-23</div>
+	</div>
+	<div class="lb" spry:hover="lh" onclick="location.href='tool2.html'">
+		<div class="btin"> ES helper</div>
+		<div class="bv">2011-04-29</div>
+	</div>
+	<div class="lb" spry:hover="lh" onclick="location.href='tool3.gb.html'">
+		<div class="btin"> Title Block Mgr.</div>
+		<div class="bv">2011-11-23</div>
+	</div>
+	<div class="lb" spry:hover="lh" onclick="location.href='tool4.html'">
+		<div class="btin"> Note Symbol Lib.</div>
+		<div class="bv">2011-01-21</div>
+	</div>
+	<div class="lb" spry:hover="lh" onclick="location.href='tool5.html'">
+		<div class="btin"> Sheet Format Mgr.</div>
+		<div class="bv">2011-10-18</div>
+	</div>
+	<div class="lb" spry:hover="lh beta" onclick="location.href='tool7.html'">
+		<div class="btin"> Table Convertor </div>
+		<div class="bv">2011-08-26</div>
+	</div>
+</div>
+</div>
+<div style="text-align:center">
+<p>Web.Link based Pro/E add-ins v1.4 beta &bull; <a href="History.html">History</a> &bull; <a href="../SetupScript.zip">Install</a><br />
+	Some Rights Reserverd &copy; 2010-2011 <a href="sip:gplan@irco.com"><img src="img/comu.png" width="16" height="16" border="0" align="absmiddle" /></a><a href="mailto:gplan@trane.com"> Dominic Lan</a> @ IRETC-AP</p>
+</div>
+<script type="text/javascript">
+Spry.$$(".bv").forEach(function(n){
+	if (dateDiff("D",nowDate(n.innerText),nowDate())<4){
+		n.style.color="#900"
+	};
+	function nowDate(m){
+		if (m) var d=new Date(m.replace(/-/i,"/"));
+		else var d=new Date();
+		return [
+			[d.getYear(),d.getMonth()+1,d.getDate()].join("/"),
+			[d.getHours(),d.getMinutes(),d.getSeconds()].join(":")
+		].join(" ");
+	}
+});
+//try{
+//	Spry.Debug.enableTrace=false;
+//	var GetActiveUser=Spry.Utils.updateContent('ActiveUser','../ANNC/ActiveUser.asp?Get=Count&uck='+now());
+//}catch(e){void(0)};
+</script>
+</body>
+</html>

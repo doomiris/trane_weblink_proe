@@ -1,0 +1,75 @@
+﻿<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<title>无标题文档</title>
+<script type="text/javascript" src="js/pfcUtils.js"></script>
+<script type="text/javascript" src="js/weblinkpub.js"></script>
+<script type="text/javascript" src="js/domipub.js"></script>
+<script type="text/javascript" src="../SpryAssets/SpryData.js"></script>
+<link rel="stylesheet" type="text/css" href="mstl.css"/>
+<script type="text/javascript">
+function GetNotes(){
+	var df=workspace+"\\Symbols\\";
+	var sPath=[
+		"\\\\shahns07\\Chiller_Projects\\18_Member_Backup\\Dominic_Lan\\Proe\\Symbol_Lib\\",
+		"\\\\shahns32\\Chiller_BOM_Work\\12_Member_Backup\\Dominic\\symbols\\"
+	];
+	var filename=["notes.sym.8","partslist.tbl.4"];
+	var s=[];
+	s[0]=copyfile(sPath[0] + filename[0], df);
+	s[1]=copyfile(sPath[0] + filename[1], df);
+	if (s[0] && s[1]) {
+	Spry.$('btnInstallNotes').disabled=true;
+	Spry.$('CopyDone').style.visibility='';
+	Spry.$('CopyDone').innerHTML+= (" Notes Lib Symbol has been saved to folder: "+df);
+	}
+}
+</script>
+</head>
+
+<body>
+<div>
+	<fieldset style="height:70px">
+		<legend>Install Notes Lib Symbol</legend>
+		<input id="btnInstallNotes" name="btnInstallNotes" type="button" value="Get Notes Lib Symbol ..." onclick="GetNotes()"/>
+		<label id="CopyDone" style="visibility:hidden"><img src="img/okicon.png"/></label>
+		<input id="goback" name="goback" type="button" value="Back to index" onclick="location.href='index.html'"/>
+		<br /><br />
+		<label>
+	If the script not worked, please download manually from <a href="http://shahns32.corp.irco.com/domisoft/symbols.zip">here</a>. Then unpack to c:\workspaces\
+	</label>
+	</fieldset>
+</div>
+<div>
+	<p><strong>How to use Notes Lib Symbol?</strong></p>
+	<ol style="font-size:12; line-height:1.5em">
+		<li>Click above button to auto-download the symbol file to your work space.</li>
+		<li>Insert <img src="Notes/cdsbtn.png" width="28" height="26" align="absmiddle" />&quot;Custom Drawing Symbol&quot;,  browse to folder &quot;c:\workspaces\Symbol&quot;, and open &quot;Notes.sym&quot;		</li>
+		<ul>
+			<li>Tip: click <img src="Notes/wsbtn.png" width="25" height="28" align="absmiddle" />working directory button will return to your workspace quickly.</li>
+		</ul>
+		<li>Switch to &quot;Grouping&quot; page, select proper notes from list		</li>
+		<ul>
+			<li><img src="Notes/grouping.png" width="274" height="280" align="top" /></li>
+		</ul>
+		<li>The third page allow you to modify some varaible text. such as relife  hole diameter.		</li>
+		<ul>
+			<li><img src="Notes/vbtext.png" width="441" height="231" align="top" /></li>
+		</ul>
+		<li>Place the Note symbol on your drawing.</li>
+	</ol>
+<p><strong>How to update my Notes symbol?</strong></p>
+	<ol>
+		<li>Click above button again.</li>
+		<li>If you can't see updates, try clear all version file of &quot;Notes.sym&quot; in folder:  &quot;c:\workspaces\Symbol\&quot;.</li>
+	</ol>
+	<p><strong>What if can't find a proper Notes in this Notes Lib Symbol?</strong></p>
+	<ol>
+		<li>	I'm still working on this symbol. If you have any need, please send to me directly.</li>
+	</ol>
+<p>&nbsp;</p>
+</div>
+
+</body>
+</html>

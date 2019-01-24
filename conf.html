@@ -1,0 +1,14 @@
+<fieldset class="cfm">
+	<legend align="center" style="border:#999 1px solid">TBM Dataset Config</legend>
+	<p>
+Tol: <input name="tbmPath" type="text" class="cfmipt" id="tbmPath" /><br />
+Sug: <input name="tbmSug" type="text" class="cfmipt" id="tbmSug" /><br />
+<input type="checkbox" name="chkTrim" id="chkTrim" /><label for="chkTrim">Always trim revision</label>
+	</p>
+	<p>&nbsp;</p>
+</fieldset>
+<fieldset class="cfm">
+	<legend align="center" style="border:#999 1px solid">Smart ES Dataset Config</legend>
+	<input name="esPath" type="text" class="cfmipt" id="esPath" />
+</fieldset>
+<input type="button" name="button" id="button" value="保存" onClick="SaveSettings()" />

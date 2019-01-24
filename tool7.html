@@ -1,0 +1,505 @@
+﻿<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<title>无标题文档</title>
+<script type="text/javascript" src="js/pfcUtils.js"></script>
+<script type="text/javascript" src="js/weblinkpub.js"></script>
+<script type="text/javascript" src="js/domipub.js"></script>
+<script type="text/javascript" src="tool7.js"></script>
+<script type="text/javascript" src="../SpryAssets/SpryData.js"></script>
+<script type="text/javascript">
+//texts = pfcCreate ("stringseq");
+//texts.Append ("Please select a point to place the table...");
+//Session.UIDisplayMessage("cca.txt","PROMPT %0s",texts)
+//alert(Session.UIReadStringMessage(false) );
+
+//TODO:   paste with EXCEL basic format
+
+function ExcelToTable ( ) {
+    var mesg = document.getElementById("mesg");
+    var errmesg = document.getElementById("errmesg");
+    mesg.innerHTML = "";
+    errmesg.innerHTML = "";
+    var array = ArrayFromExcel();
+    if (array == null) {
+        mesg.innerHTML = "null array";
+        return;
+    }
+    if (array != null) { ArrayToProETable(array); }
+}
+function ArrayFromExcel ( ) {
+    var oXL = null;
+    var mesg = document.getElementById("mesg");
+    var errmesg = document.getElementById("errmesg");
+    // Try to access Excel and get Application object.
+    try {
+        oXL = GetObject("","Excel.Application");
+        if (oXL == null) {
+            errmesg.innerHTML = "Failed to get Excel session object.";
+            return null;
+        }
+    }
+    catch (e) {
+        errmesg.innerHTML = "Excel must be running!";
+        return null;
+    }
+    // Get Selection object
+    var sel = null;
+    try {
+        sel = oXL.ActiveWindow.Selection;
+    }
+    catch (e) {
+        errmesg.innerHTML = "Could not get Selection object.";
+        return null;
+    }
+    if (sel.columns.count <= 1 && sel.rows.count <= 1) {
+        errmesg.innerHTML = "A range of cells must be selected in Excel.";
+        return null;
+    }
+    mesg.innerHTML = "Selection: " + sel.rows.count + " rows, " + sel.columns.count + " columns";
+    var i_row = 0;
+    var e_rows = new Enumerator(sel.rows);
+    var array = new Array();
+    // Loop through each row of the selection
+    for ( ; !e_rows.atEnd(); e_rows.moveNext() ) {
+        var i_col = 0;
+        var row = e_rows.item();
+        var e_cols = new Enumerator(row.columns);
+        array[i_row] = new Array();
+        // Within the row, loop through each column
+        for ( ; !e_cols.atEnd(); e_cols.moveNext() ) {
+
+            var cell = e_cols.item();
+           // var val = cell.value;
+			var val = cell.text;
+
+            if (val == null) { val = " "; }
+            array[i_row][i_col] = "" + val;
+            i_col++;
+        }
+        i_row++;
+    }
+    return array;
+}
+function ArrayToProETable ( array ) {
+    var errmesg = document.getElementById("errmesg");
+    var session = null;
+    var drawing = null;
+    // Get ProE session object
+    try {
+        session = pfcGetProESession();
+    }
+    catch (e) {
+        errmesg.innerHTML = "Unable to connect to Pro/Engineer";
+        return null;
+    }
+    // Get model object and ensure it's a drawing
+    try {
+        drawing = session.CurrentModel;
+
+        if (drawing == null || drawing.Type != pfcCreate("pfcModelType").MDL_DRAWING) {
+            errmesg.innerHTML = "A drawing must be active!";
+            return null;
+        }
+    }
+    catch (e) {
+        errmesg.innerHTML = "A drawing must be active.";
+        return null;
+    }
+    // Get location for new table by mouse click
+    var location = getMousePickPosition("Select location for table", true);
+    if (location == null) { return null; }
+    // Setup the table creation instructions object
+    var instrs = new pfcCreate("pfcTableCreateInstructions").Create(location);
+    instrs.SizeType = pfcCreate("pfcTableSizeType").TABLESIZE_BY_NUM_CHARS;
+    // Figure out max sizes to auto-expand the table
+    var ArrayMaxData = getArrayMaxData(array);
+    // Generate column data (for table creation instructions object)
+    //   API Bug: Can't create table with more than 50 columns
+    //   Workaround: Create with one column, add more later
+    var column_just = pfcCreate("pfcColumnJustification").COL_JUSTIFY_LEFT;
+    var columnData = pfcCreate("pfcColumnCreateOptions");
+    var columnOption = pfcCreate("pfcColumnCreateOption");
+    var maxOneShotCols = 50; // Most columns that can be created without workaround
+    if (ArrayMaxData.cols < maxOneShotCols) {
+        // Number of columns is ok, setup instructions to create table as-is.
+        // Use max column widths to auto-size columns
+        for (var i=0; i < ArrayMaxData.max_col_width.length; i++ ) {
+            var column = columnOption.Create(column_just, ArrayMaxData.max_col_width[i]);
+            columnData.Append(column);
+        }
+    }
+    else {
+        // Too many columns to create table as-is, setup instructions
+        // to create table with one column, expand after creation
+        var column = columnOption.Create(column_just, ArrayMaxData.max_col_width[0]);
+        columnData.Append(column);
+    }
+    // Add column data object to table creation instructions
+    instrs.ColumnData = columnData;
+    // Generate row data (for table creation instructions object)
+    //   API Bug: Can't create table with more than 50 rows
+    //   Workaround: Create with one row, add more later
+    //
+    var rowData = pfcCreate("realseq");
+    var maxOneShotRows = 50; // Most rows that can be created without workaround
+
+    if (ArrayMaxData.rows < maxOneShotRows) {
+        // Number of rows is ok, setup instructions to create table as-is.
+        // Use max row heights to auto-size rows
+        for (var i = 0; i < array.length; i++) {
+            rowData.Append(ArrayMaxData.max_row_height[i]);
+        }
+    }
+    else {
+        // Too many rows to create table as-is, setup instructions
+        // to create table with one row, expand after creation
+        rowData.Append(ArrayMaxData.max_row_height[0]);
+    }
+    // Add row data object to table creation instructions
+    instrs.RowHeights = rowData;
+    // Create the table (no contents yet, and won't be visible yet)
+    //
+    var dwgTable = null;
+    try {
+        dwgTable = drawing.CreateTable(instrs);
+    }
+    catch (e) {
+        errmesg.innerHTML += "Cannot create table: " + e.message;
+        return;
+    }
+    // Add rows if data had more than allowed to create in one shot
+    try {
+        if (ArrayMaxData.rows >= maxOneShotRows) {
+            for (var i=1; i < array.length; i++ ) {
+                // Add remaining rows needed. Index starts 
+                //   at 1 because one row already exists
+                dwgTable.InsertRow(ArrayMaxData.max_row_height[i], null, false)
+            }
+        }
+    }
+    catch (e) {
+        errmesg.innerHTML += "Cannot add rows: " + e.message;
+        return;
+    }
+    // Add columns if data had more than allowed to create in one shot
+    try {
+        if (ArrayMaxData.cols >= maxOneShotCols) {
+            for (var i=1; i < ArrayMaxData.max_col_width.length; i++ ) {
+                // Add remaining columns needed. Index starts 
+                //   at 1 because one column already exists
+                dwgTable.InsertColumn(ArrayMaxData.max_col_width[i], null, false);
+            }
+        }
+    }
+    catch (e) {
+        errmesg.innerHTML += "Cannot add columns: " + e.message;
+        return;
+    }
+    // Fill in each cell with data
+    for (var i=0; i < array.length; i++ ) {
+        for (var j=0; j < array[i].length; j++ ) {
+            // Table cell indexes start with one, arrays with zero
+            writeTextInCell(dwgTable, i+1, j+1, array[i][j]);
+        }
+    }
+    // Display the table
+    dwgTable.Display ();
+}
+function getMousePickPosition (prompt, hideBrowser) {
+    if (hideBrowser) {
+        var browserSize = Session.CurrentWindow.GetBrowserSize();
+        Session.CurrentWindow.SetBrowserSize(0.0);
+    }
+    if (prompt) if (prompt.length>0) alert(prompt);
+    var mouseButton = pfcCreate("pfcMouseButton");
+    var mouseClick = Session.UIGetNextMousePick(mouseButton.MOUSE_BTN_LEFT);
+	//restore window
+    if (hideBrowser) Session.CurrentWindow.SetBrowserSize(browserSize);
+    return mouseClick.Position;
+}
+function getArrayMaxData ( array ) {
+    var obj = new Object();
+    // Figure out max size for each row and column to auto-expand
+    obj.max_col_width = new Array();
+    obj.max_row_height = new Array();
+    for (var i=0; i < array.length; i++ ) {
+        obj.max_row_height[i] = 0;
+    }
+    for (var i=0; i < array[0].length; i++ ) {
+        obj.max_col_width[i] = 0;
+    }
+    obj.rows = array.length;
+    obj.cols = 0;
+    // populate arrays of max column widths and max row heights
+    for (var i=0; i < array.length; i++) {
+        for (var j=0; j < array[i].length; j++) {
+            if (obj.cols < array[i].length) { obj.cols = array[i].length; }
+            var lines = array[i][j].split("\n");
+            if (lines.length > obj.max_row_height[i]) {
+                obj.max_row_height[i] = lines.length;
+            }
+            for (var k=0; k < lines.length; k++ ) {
+                if (lines[k].length > obj.max_col_width[j]) {
+                    obj.max_col_width[j] = lines[k].length;
+                }
+            }
+
+        }
+
+    }
+    return obj;
+}
+function TableToExcel ( ) {
+    var mesg = document.getElementById("mesg");
+    var errmesg = document.getElementById("errmesg");
+    mesg.innerHTML = "";
+    errmesg.innerHTML = "";
+
+    var array = ArrayFromProETable();
+    if (array == null) {
+        mesg.innerHTML = "null array";
+        return;
+    }
+
+    if (array != null) { ArrayToExcel(array); }
+}
+function ArrayFromProETable ( ) {
+    var mesg = document.getElementById("mesg");
+    var errmesg = document.getElementById("errmesg");
+    var session = null;
+    var drawing = null;
+
+
+    // Get ProE session object
+    //
+    try {
+        session = pfcGetProESession();
+    }
+    catch (e) {
+        errmesg.innerHTML = "Unable to connect to Pro/Engineer";
+        return null;
+    }
+
+
+    // Get model object and ensure it's a drawing
+    //
+    try {
+        drawing = session.CurrentModel;
+
+        if (drawing == null || drawing.Type != pfcCreate("pfcModelType").MDL_DRAWING) {
+            errmesg.innerHTML = "A drawing must be active!";
+            return null;
+        }
+    }
+    catch (e) {
+        errmesg.innerHTML = "A drawing must be active.";
+        return null;
+    }
+
+
+    // Prompt user to select an existing table
+    //
+    var selections = null;
+    var table = null;
+
+    try {
+        selections = selectItems("dwg_table", 1);
+        var tabnum = selections.Item(0).SelItem;
+        table = drawing.GetTable(tabnum.Id);
+    }
+    catch (e) { // nothing selected
+        errmesg.innerHTML = "A drawing table was not selected.";
+        return null;
+    }
+
+    selections.Item(0).UnHighlight();
+
+
+    mesg.innerHTML = "Selected Table: " 
+                     + table.GetRowCount() + " rows, " 
+                     + table.GetColumnCount() + " columns";
+
+
+    // Gather data from table and populate into array
+    //
+
+    var array = new Array();
+
+    for (var i=0; i<table.GetRowCount(); i++) {
+
+        array[i] = new Array();
+
+        for (var j=0; j<table.GetColumnCount(); j++) {
+
+            // Table cell indexes start with one, arrays with zero
+            var cell = pfcCreate("pfcTableCell").Create(i+1,j+1);
+            var mode = pfcCreate("pfcParamMode").DWGTABLE_NORMAL;
+            array[i][j] = "";
+
+            try {
+                var textseq = table.GetText(cell, mode);
+
+                for (var k=0; k<textseq.Count; k++) {
+                    var textitem = textseq.Item(k);
+                    if (k > 0) { array[i][j] += "\n"; }
+                    array[i][j] += textitem;
+                }
+            }
+            catch (e) { // cell has no value
+                // ignore
+            }
+
+        }
+
+    }
+
+    return array;
+}
+function ArrayToExcel ( array ) {
+    var oXL;
+    var errmesg = document.getElementById("errmesg");
+
+
+    // Try to access Excel and get Application object.
+    //
+    try {
+        oXL = GetObject("","Excel.Application");
+        if (oXL == null) {
+            errmesg.innerHTML = "Failed to get Excel session object.";
+            return null;
+        }
+    }
+    catch (e) {
+        // oXL = new ActiveXObject("Excel.Application");
+        errmesg.innerHTML = "Excel must be running!";
+        return;
+    }
+
+
+    // Make session visible, get Sheet object
+    //
+    try {
+        oXL.Visible = true;
+        var oWB = oXL.Workbooks.Add();
+        var oSheet = oWB.ActiveSheet;
+    }
+    catch (e) {
+        errmesg.innerHTML = "Problem creating new workbook.";
+        return;
+    }
+
+
+    // Put the array data into the cells of the active sheet
+    //
+    for (var i=0; i < array.length; i++ ) {
+        for (var j=0; j < array[i].length; j++ ) {
+            // Excel cell indexes start with one, arrays with zero
+            oSheet.Cells(i+1, j+1).Value = array[i][j];
+        }
+    }
+
+}
+function selectItems ( options, max ) {
+    // Setup options object
+    selOptions = pfcCreate("pfcSelectionOptions").Create(options);
+    selOptions.MaxNumSels = parseInt(max);
+
+
+    var session = pfcGetProESession();
+    var browserSize = session.CurrentWindow.GetBrowserSize();
+    session.CurrentWindow.SetBrowserSize(0.0);
+
+
+    var selections = null;
+
+    try {
+        selections = session.Select(selOptions, null);
+        session.CurrentWindow.SetBrowserSize(browserSize);
+    }
+    catch (err) {
+        session.CurrentWindow.SetBrowserSize(browserSize);
+        // In case user didn't select expected item
+        var errstr = pfcGetExceptionType(err);
+        if (errstr == "pfcXToolkitUserAbort" || errstr == "pfcXToolkitPickAbove") {
+            return null;
+        }
+    }
+
+    if (selections == null || selections.Count == 0)
+        return null;
+
+
+    return selections;
+}
+
+</script>
+<style type="text/css">
+.lbl {
+	font-family: Arial;
+	font-size: 18px;
+	font-weight: bold;
+	color: #333;
+}
+.ll {
+	filter: Gray;
+}
+.lv{
+	cursor:pointer;
+}
+.bl, bv {
+	border:1px solid #fff;
+}
+.bv{
+	border:1px solid #CCC;
+}
+</style>
+</head>
+
+<body>
+<form name="f">
+  <table border=0 cellspacing="0" class="bv">
+	  <tr>
+	  	<td colspan="4">&nbsp;</td>
+	  	<td>&nbsp;</td>
+  	</tr>
+	  <tr>
+		<td width="50">&nbsp;</td>
+		<td width="150" align="center" valign="middle" class="bl" onmouseover="this.className='bv'" onmouseout="this.className='bl'">
+		<img src="img/excel-logo.png" width="100" height="95" class="ll" onclick="TableToExcel()" onmouseover="this.className='lv'" onmouseout="this.className='ll'"/></td>
+		  <td width="100" align="center" valign="middle">
+			<img src="img/kg_65.gif" width="52" height="46" /></td>
+		<td width="200" align="center" valign="middle" class="bl" onmouseover="this.className='bv'" onmouseout="this.className='bl'">
+		<img src="img/PTC Logo.jpg" width="225" height="141" class="ll" onclick="ExcelToTable()" onmouseover="this.className='lv'" onmouseout="this.className='ll'"/>
+			</td>
+		<td width="50">&nbsp;</td>
+	  </tr>
+	  <tr>
+	  	<td>&nbsp;</td>
+	  	<td align="center" valign="middle"><span class="lbl">Excel</span></td>
+	  	<td width="100" align="center" valign="middle" class="lbl">&lt;==&gt;</td>
+	  	<td align="center" valign="middle"><span class="lbl">Drawing Table</span></td>
+	  	<td align="center" valign="bottom">&nbsp;</td>
+  	</tr>
+	  <tr>
+	  	<td colspan="4" align="center" valign="bottom">
+	  		<span style="color:red"><a id="errmesg"></a></span><br />
+	  		<a id="mesg"></a>
+  		</td>
+	  	<td align="center" valign="bottom">&nbsp;</td>
+	  	</tr>
+	  <tr>
+	  	<td colspan="4" align="center" valign="bottom">
+	  		<input type="button" name="button" id="button" value="Close" onclick="CloseBrowser()"/>
+  		</td>
+	  	<td align="center" valign="bottom">&nbsp;</td>
+	  	</tr>
+  </table>
+
+  
+  <br>
+</form>
+
+</body>
+</html>

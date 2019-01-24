@@ -1,0 +1,509 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<title>Domisoft-PRO-tool</title>
+<link href="mstl.css" rel="stylesheet" type="text/css" />
+<link href="es/ESview.css" rel="stylesheet" type="text/css" />
+<script type="text/javascript" src="js/pfcUtils.js"></script>
+<script type="text/javascript" src="js/weblinkpub.js"></script>
+<script type="text/javascript" src="js/domipub.js"></script>
+<script type="text/javascript" src="../SpryAssets/xpath.js"></script>
+<script type="text/javascript" src="../SpryAssets/SpryData.js"></script>
+<!--<script type="text/javascript" src="../SpryAssets/SpryDOMUtils.js"></script>-->
+<script type="text/javascript" src="../SpryAssets/SpryCollapsiblePanel.js"></script>
+<script type="text/javascript" src="../SpryAssets/SpryAccordion.js"></script>
+<!--<script type="text/javascript" src="../SpryAssets/SpryAutoSuggest.js"></script>-->
+<script src="tool3.carrier.js" type="text/javascript"></script>
+<link href="es/es-SpryAccordion.css" rel="stylesheet" type="text/css" />
+<link href="tbm/tbm-SpryCollapsiblePanel.css" rel="stylesheet" type="text/css" />
+<!--<link href="../SpryAssets/SpryAutoSuggest.css" rel="stylesheet" type="text/css" />-->
+<script type="text/javascript">
+//if (Session.CurrentModel && Session.CurrentModel.GetParam("DESCRIPTION_CN")) window.location.href="tool3.gb.html"; //gb
+var Acc;
+var titleBlock=new TBM();
+var xmlPath=getCookie('tbmPath');
+if (!xmlPath) xmlPath="TBM/tbmdata.xml";
+//var sugPath=getCookie('tbmPath');
+//if (!sugPath) sugPath="TBM/sugdata.xml";
+var ds1 = new Spry.Data.XMLDataSet(xmlPath, "TBM/Def");
+//var dsSug = new Spry.Data.XMLDataSet(sugPath, "Suggest/item", {distinctOnLoad: true});
+myObserver = new Object;      
+myObserver.onPostUpdate = function(notifier, data){
+	if (!ds1.dataWasLoaded) return;
+	if(Acc) return;
+	Acc = new Spry.Widget.Accordion("Accordion1",{enableKeyboardNavigation:false});	
+	Acc.openPanel(1);
+	if (!titleBlock.CurrentModel)	{
+		CollapsiblePanel1.close();
+		CollapsiblePanel2.close();
+		CollapsiblePanel3.close();
+		return;
+	}
+	if (!titleBlock.drawing){	//ini model
+		CollapsiblePanel1.close();
+		CollapsiblePanel3.close();
+		var dv=titleBlock.Version.GetMdlVersion();
+	}else{		//ini drw
+		var f=titleBlock.CheckLink();
+		if (!f.isCname) Spry.$("cdc").className="blink";
+		if (!f.isDesp) Spry.$("cdd").className="blink";
+	}
+	if (!titleBlock.model.IsCommonNameModifiable()) Spry.$(chkCname).checked=false;
+	if (titleBlock.model.IsLocked) Spry.$(chkDesp).checked=false;
+	
+	Spry.$('FileName').innerText=titleBlock.CurrentModel.FileName;
+	Spry.$('DRAWN_BY').value=getCookie("DRAWN_BY");
+	Spry.$('DRAWN_DATE').value=GetDate();	
+	if (CollapsiblePanel1.isOpen()){
+		//fix bug when clicking first row TBM don't change tol
+			var row = ds1.findRowsWithColumnValues({"name": "Default"}, true);
+			ds1.setCurrentRow(row.ds_RowID);
+		titleBlock.Tol.LoadToWeb();
+	}
+	if (CollapsiblePanel2.isOpen()) titleBlock.Desp.LoadToWeb();
+	if (CollapsiblePanel3.isOpen()){
+		titleBlock.Para.LoadToWeb();
+		titleBlock.Version.LoadToWeb();
+	}
+	if (CollapsiblePanel1.isOpen() && CollapsiblePanel3.isOpen()){
+		if (titleBlock.drawing.NumberOfSheets>1){
+			var sheetCounter=Spry.$('sheetCounter');
+			sheetCounter.style.display="inline";
+			sheetCounter.innerText=sheetCounter.innerText.replace("#current#",titleBlock.drawing.CurrentSheetNumber).replace("#total#",titleBlock.drawing.NumberOfSheets);
+		
+			if (titleBlock.drawing.CurrentSheetNumber>1){
+				if (Spry.$('txx').value.length==0) openLayer('frmSheet'); 
+			}
+		}
+	}
+}
+Spry.Data.Region.addObserver("dlist", myObserver);
+
+function Apply(){
+	if (!Session.GetModelWindow(titleBlock.CurrentModel)) {
+		alert("Not the same window! Please active current window or reload this page and try again!");
+		return;
+	}
+	if (CollapsiblePanel1.isOpen()){
+		if (titleBlock.drawing)	 titleBlock.Tol.SetToDrw();
+	}
+	if (CollapsiblePanel2.isOpen()){
+		if (Spry.$(chkCname).checked){
+			if (!titleBlock.drawing || titleBlock.model.IsCommonNameModifiable()){
+				titleBlock.SetCommonName(Spry.$(cname1).value, Spry.$(cname2).value);
+			}else{
+				if (Spry.$("cdc").className=="clink") titleBlock.Desp.RebuildCName();
+				else titleBlock.Desp.SetIndependCName(Spry.$(cname1).value, Spry.$(cname2).value);
+			}
+		}
+		if (Spry.$(chkDesp).checked){
+			if (titleBlock.drawing){
+				if (Spry.$("cdd").className=="clink") titleBlock.Desp.RebuildDesp();
+				else titleBlock.Desp.SetIndependDesp(Spry.$(desp1).value, Spry.$(desp2).value);			
+			}else{
+				titleBlock.SetDescription(Spry.$(desp1).value, Spry.$(desp2).value);
+			}
+		}
+	}
+	if (CollapsiblePanel3.isOpen()){
+		if (titleBlock.drawing) titleBlock.Para.SetToDrw();
+		if (titleBlock.drawing) titleBlock.Version.SetToDrw();
+	}
+	if (titleBlock.drawing){
+		titleBlock.drawing.Regenerate ();
+	}
+	CloseBrowser();
+}
+function GetDate(){
+	var MMM=["JAN","FEB","MAR","APR","MAY","JUN","JUL","AUG","SEP","OCT","NOV","DEC"]
+	var d=new Date();
+	var dd=d.getDate();
+	if (dd.toString().length==1) dd="0"+dd;
+	return dd+"-"+MMM[d.getMonth()]+"-"+d.getFullYear();
+}
+function CheckCommonName(){
+	if (Spry.$("cdc").className=="blink") {CR();return true;}
+	if (titleBlock.model.IsCommonNameModifiable()||!Spry.$('chkCname').checked){
+		CR();
+		return true;
+	}
+	else {
+		if (titleBlock.drawing){
+		var t=window.confirm("You can only change a part's COMMON NAME by Windchill once it has been checked-in.\n\nHowever, TBM could change this value independly.\n\nDo you want to use independ COMMON NAME for this drawing?");
+		if (t){
+			Spry.$("cdc").className="blink";
+			CR();
+		}
+		return t;
+		}else{
+			alert("You can only change a part's COMMON NAME by Windchill once it has been checked-in.");
+			return false;
+		}
+	}
+	function CR(){
+		if (Spry.$('chkCname').checked){
+			Spry.$('cname1').readOnly=false;
+			Spry.$('cname2').readOnly=false;
+		}else{
+			Spry.$('cname1').readOnly=true;
+			Spry.$('cname2').readOnly=true;
+		}
+	}
+}
+function CheckDescription(){
+	if (Spry.$("cdd").className=="blink") {CR();return true;}
+	var lifeState=GetPara(titleBlock.model,"PTC_WM_LIFECYCLE_STATE").toLowerCase();
+	if (lifeState=="in work" || lifeState.length==0 || !Spry.$('chkDesp').checked) {
+		CR();
+		return true;
+	}
+	else {
+		var t=window.confirm("You can't change the DESCRIPTION because the model is not in \"In Work\" state.\n\n However, TBM could change this value independly.\n\nDo you want to use independ DESCRIPTION for this drawing?");
+		if (titleBlock.drawing) Spry.$("cdd").className="blink";
+		if (t){
+			Spry.$("cdd").className="blink";
+			CR();
+		}
+		return t;
+	}
+	function CR(){
+		if (Spry.$('chkDesp').checked){
+			Spry.$('desp1').readOnly=false;
+			Spry.$('desp2').readOnly=false;
+		}else{
+			Spry.$('desp1').readOnly=true;
+			Spry.$('desp2').readOnly=true;
+		}
+	}
+}
+function toggleLink(e){
+	e.className=(e.className=="clink")?"blink":"clink";
+	if (e.className=="clink"){
+		if (e.tName=="cname"){
+			var a=titleBlock.GetCommonName(true);
+			titleBlock.Desp.LoadToWeb(a,null,false,true);
+		}
+		if (e.tName=="desp"){
+			var b=titleBlock.GetDescription(true);
+			titleBlock.Desp.LoadToWeb(null,b,true,false);
+		}
+	}
+		
+		
+}
+//function LoadConf(){
+//	openLayer('conf');
+//	Spry.Utils.updateContent('concc','conf.html',LoadSettings);
+//}
+//function SaveSettings(){
+//	addCookie('tbmPath',Spry.$(tbmPath).value);
+//	addCookie('tbmSug',Spry.$(tbmSug).value);
+//	addCookie('Trim_Rev',Spry.$(chkTrim).checked);
+//	addCookie('esPath',Spry.$(esPath).value);
+//	alert("Your settings have been saved!");
+//}
+//function LoadSettings(){
+//	Spry.$(tbmPath).value=getCookie('tbmPath');
+//	Spry.$(tbmSug).value=getCookie('tbmSug');
+//	Spry.$(esPath).value=getCookie('esPath');
+//	Spry.$(chkTrim).checked=eval(getCookie('Trim_Rev'));
+//}
+function TogglePanel(){
+	if (!CollapsiblePanel1.isOpen() && !CollapsiblePanel2.isOpen() && !CollapsiblePanel3.isOpen()) {
+		CollapsiblePanel1.open();
+		CollapsiblePanel2.open();
+		CollapsiblePanel3.open();
+	}else{
+		CollapsiblePanel1.close()
+		CollapsiblePanel2.close();
+		CollapsiblePanel3.close();
+	}
+return false;
+}
+function copyFromSheet(sheetNumber){
+	var copyTB=new multiSheets();
+//	copyTB.fromSheet=sheetNumber;
+	copyTB.toSheet=titleBlock.drawing.CurrentSheetNumber;
+	copyTB.setTB();
+	CloseBrowser();
+}
+</script>
+<style type="text/css">
+.intbtn {
+	vertical-align: bottom;
+	height: 20px;
+	width: 20px;
+	cursor: pointer;
+}
+.windInp {
+	height: 17px;
+	width: 300px;
+	border: 1px solid #333;
+	font-size: 12px;
+	padding-top: 3px;
+}
+.chk {
+	vertical-align: middle;
+}
+
+.container{
+	/*	width: 300px;*/
+	height: 30px;/*	border: 1px solid #DDDDDD;
+	padding-left: 5px;*/
+}
+#bgdiv {
+	background-color: #000;
+	height: 100%;
+	width: 100%;
+	position: absolute;
+	z-index: 98;
+	left: 0px;
+	top: 0px;
+	filter: Alpha(Opacity=50);
+	opacity: 0.5;
+}
+.boxdiv {
+	font-size: 12px;
+	color: #000;
+	background-color: #FFF;
+	position: absolute;
+	z-index: 99;
+	height: 400px;
+	width: 600px;
+	border: 1px solid #900;
+	padding: 5px;
+}
+.cfm {
+	margin: 10px;
+	padding: 10px;
+}
+.cfmipt {
+	height: 25px;
+	width: 300px;
+	padding: 5px;
+	margin: 5px;
+}
+.tbmCap {
+	font-size: 20px;
+	padding: 5px;
+	height: 25px;
+	border: 1px solid #333;
+	margin-bottom: 5px;
+	background-image: url(img/header.jpg);
+	background-position: 15px;
+}
+.clink, .blink {
+	display: inline;
+	float: right;
+	height: 16px;
+	width: 16px;
+	border-top-width: 0px;
+	border-right-width: 0px;
+	border-bottom-width: 0px;
+	border-left-width: 0px;
+	cursor: pointer;
+	background-image: url(img/link.png);
+	background-repeat: no-repeat;
+}
+.blink {
+	background-image: url(img/linkbreak.png);
+}
+</style>
+</head>
+
+<body>
+<table width="700" border="0" align="center" cellpadding="5" cellspacing="0">
+	<tr>
+	<td width="200" valign="top">
+<div spry:region="ds1">
+<div id="Accordion1" class="Accordion" onfocus="this.blur()">
+	<div class="AccordionPanel">
+		<div class="AccordionPanelTab">
+		<!--<img src="img/conf.png" width="16" height="16" align="absmiddle" style="float:right; cursor:pointer" onclick="LoadConf(); return false" title="config dataset" />-->All</div>
+		<div class="AccordionPanelContent">
+			<ul spry:repeatchildren="ds1">
+				<li spry:setrow="ds1" class="listes" spry:hover="listhover" spry:select="listselect" spry:if="'{name}'!=='Default'">
+					{name}
+					<span spry:if="'{description}'.length>0" class="desp"><br />{description}</span>
+				</li>
+			</ul>
+		</div>
+	</div>
+<!-- ====================== -->
+	<div class="AccordionPanel">
+		<div class="AccordionPanelTab">Favorites</div>
+		<div class="AccordionPanelContent">
+			<ul spry:repeatchildren="ds1">
+				<li spry:setrow="ds1" class="listes" spry:hover="listhover" spry:select="listselect" spry:if="'{class}'=='Favorites'">
+					{name}
+					<span spry:if="'{description}'.length>0" class="desp"><br />{description}</span>
+				</li>
+			</ul>
+		</div>
+	</div>
+</div>
+</div>
+<div id="Invtip">TBM: <strong>Proe</strong> | <a href="../Inventor/tool3.html" title="switch to TBM for Inventor">Inventor</a></div>
+</div>
+</td>
+		<td valign="top">
+<div class="tbmCap" ondblclick="TogglePanel()" title="Double-click this area will switch all panels between OPEN & CLOSE">
+	<div style="font-size:12px; float:right; display:none; margin-top:5px; color:#fff" id="sheetCounter">Sheet: #current#/#total#</div>
+	<label id="FileName" style="color:#FFF"/>None</label>
+</div>
+<div id="CollapsiblePanel1" class="CollapsiblePanel">
+	<div class="CollapsiblePanelTab" title="close this pannel if you don't intend to modify below info.">Tolerence</div>
+	<div class="CollapsiblePanelContent" spry:detailregion="ds1" id="dlist">
+		<table width="100%" border="0" cellspacing="0" cellpadding="5">
+			<tr>
+				<td>Drafter</td>
+				<td><input name="Drafter" type="text" id="Drafter" value="{Drafter}" tabindex="1"/></td>
+				<td>DRAFT_DATE</td>
+				<td><input type="text" name="DRAFT_DATE" id="DRAFT_DATE" value="{DRAFT_DATE}" tabindex="5"/></td>
+			</tr>
+			<tr>
+				<td>Checker</td>
+				<td><input name="Checker" type="text" id="Checker" value="{Checker}" tabindex="2"/></td>
+				<td>CHECK_DATE</td>
+				<td><input name="CHECK_DATE" type="text" id="CHECK_DATE" tabindex="2" value="{CHECK_DATE}"/></td>
+			</tr>
+			<tr>
+				<td>Engr</td>
+				<td><input name="Engr" type="text" id="Engr" value="{Engr}" tabindex="3"/></td>
+				<td>ENGR_DATE</td>
+				<td><input name="ENGR_DATE" type="text" id="ENGR_DATE" value="{ENGR_DATE}" tabindex="6"/></td>
+			</tr>
+			<tr>
+				<td>Std_tolerance</td>
+				<td><input name="Std_tolerance" type="text" id="Std_tolerance" value="{Std_tolerance}" tabindex="4"/></td>
+				<td>Std_paint</td>
+				<td><input name="Std_paint" type="text" id="Std_paint" value="{Std_paint}" tabindex="7"/></td>
+			</tr>
+		</table>
+	</div>
+</div>
+<div id="CollapsiblePanel2" class="CollapsiblePanel">
+	<div class="CollapsiblePanelTab" title="close this pannel if you don't intend to modify below info.">Descriptions</div>
+	<div class="CollapsiblePanelContent">
+		<table width="100%" border="0" cellspacing="5" cellpadding="0">
+			<tr>
+				<td colspan="2" align="left">
+<!--					<div class="clink" onclick="if (Spry.$(chkCname).checked) toggleLink(this)" id="cdc" tName="cname"></div>-->
+					<input name="chkCname" type="checkbox" class="chk" id="chkCname" onclick="return CheckCommonName()"/>
+					<label for="chkCname"><strong>Common Name</strong></label>
+					<img src="img/copy.png" width="16" height="16" align="absmiddle" style="cursor:pointer" onclick="window.clipboardData.setData('Text',[Spry.$('cname1').value,Spry.$('cname2').value].join('; '))"/></td>
+				</tr>
+			<tr>
+				<td width="100" align="right">1st Line:</td>
+				<td align="left"><input name="cname1" type="text" class="windInp" id="cname1" readonly="readonly" />
+				</td>
+			</tr>
+			<tr>
+				<td align="right">2nd Line:</td>
+				<td align="left"><input name="cname2" type="text" class="windInp" id="cname2" readonly="readonly" />
+				</td>
+			</tr>
+			<tr>
+				<td colspan="2" align="left">
+<!--					<div class="clink" onclick="if (Spry.$(chkDesp).checked) toggleLink(this)" id="cdd" tName="desp"></div>-->
+					<input name="chkDesp" type="checkbox" class="chk" id="chkDesp" onclick="return CheckDescription()" />
+					<label for="chkDesp"><strong>Description</strong></label>
+		        <img src="img/copy.png" alt="" width="16" height="16" align="absmiddle" style="cursor:pointer"  onclick="window.clipboardData.setData('Text',[Spry.$('desp1').value,Spry.$('desp2').value].join('; '))"/></td>
+				</tr>
+			<tr>
+				<td align="right">1st Line:</td>
+				<td align="left"><input name="desp1" type="text" class="windInp" id="desp1" readonly="readonly" />
+				</td>
+			</tr>
+			<tr>
+				<td align="right">2nd Line:</td>
+				<td align="left"><input name="desp2" type="text" class="windInp" id="desp2" readonly="readonly" />
+				</td>
+			</tr>
+			<tr>
+				<td colspan="2" align="left">&nbsp;</td>
+				</tr>
+		</table>
+		</div>
+</div>
+<div id="CollapsiblePanel3" class="CollapsiblePanel">
+	<div class="CollapsiblePanelTab" title="close this pannel if you don't intend to modify below info.">Information</div>
+	<div class="CollapsiblePanelContent">
+		<table width="100%" border="0" cellspacing="0" cellpadding="5">
+			<tr>
+				<td width="100" align="right"> Name:</td>
+				<td align="left">
+						<input name="DRAWN_BY" type="text" class="windInp" id="DRAWN_BY" ondblclick="this.value=getCookie('DRAWN_BY')" title="Double-click this textbox will load your saved name!"/>
+						<img src="img/efx_screw_save.gif" alt="" width="23" height="23" class="intbtn" title="Remember this name (save to cookie)." onclick="addCookie('DRAWN_BY',Spry.$(DRAWN_BY).value); Spry.$('DRAWN_BY').style.background='#CF0'" style="display:inline; padding-bottom:1px"/>
+				</td>
+			</tr>
+			<tr>
+				<td align="right">Date:</td>
+				<td align="left"><input name="DRAWN_DATE" type="text" class="windInp" id="DRAWN_DATE" ondblclick="this.value=GetDate()" title="Double-click this textbox will generate the date of today!"/></td>
+			</tr>
+			<tr>
+				<td align="right">Revision:</td>
+				<td align="left"><input name="Revision" type="text" class="windInp" id="Revision" ondblclick="this.value=this.value.split('.')[0]" title="Double-click this textbox will remove interation"/></td>
+			</tr>
+			<tr>
+				<td align="right">&nbsp;</td>
+				<td align="left">&nbsp;</td>
+			</tr>
+		</table>
+	</div>
+</div>
+<div spry:region="dsSug" style="text-align:right; margin-top:5px">
+	<input type="button" onclick="Apply()" value="Apply" class="bt" spry:hover="bh"/>
+	<input type="button" onclick="CloseBrowser()" value="Cancel" class="bt" spry:hover="bh"/>
+</div>
+		</td>
+	</tr>
+</table>
+<div id="conf">
+	<script type="text/javascript">Spry.$("conf").style.display="none"</script>
+	<div style="float:left;width:575px;height:25px"><span style="font-family:Arial; font-size:12px; font-weight:bold">WebLink App Config:</span></div>
+	<div style="float:right"><img src="img/close.png" onclick="closeLayer('conf')" title="Close" class="cl"></div>
+	<div id="concc">
+
+	</div>
+</div>
+<br style="clear:both" />
+<div id="frmSheet">
+	<script type="text/javascript">Spry.$("frmSheet").style.display="none"</script>
+	<div style="float:left;width:575px;height:25px"><span style="font-family:Arial; font-size:12px; font-weight:bold">Multi-Sheets Option</span></div>
+	<div style="float:right"><img src="img/close.png" onclick="closeLayer('frmSheet')" title="Close" class="cl"></div>
+	<div style="clear:both">
+<hr />
+<img src="img/coquette_036.png" width="128" height="128" style="float:left"/>
+<div style="float:left">
+<p>&nbsp;</p>
+<p><label><strong>
+	Current title block is empty. Do you wish to have a copy from the first sheet?</strong></label></p>
+<p>
+	<label>Click [OK], TBM will copy info from the 1st sheet to current sheet.</label>
+	<br />
+<label>Click [Cancel] to define title block by yourself.</label></p>
+</div>
+<hr  style="clear:both" />
+<p style="float:right">
+	<input type="button" onclick="copyFromSheet(1)" value="OK" class="bt" />
+	<input type="button" onclick="closeLayer('frmSheet')" value="Cancel" class="bt"/>
+</p>
+	</div>
+</div>
+<script type="text/javascript">
+var CollapsiblePanel1 = new Spry.Widget.CollapsiblePanel("CollapsiblePanel1",{enableKeyboardNavigation:false});
+var CollapsiblePanel2 = new Spry.Widget.CollapsiblePanel("CollapsiblePanel2",{enableKeyboardNavigation:false});
+var CollapsiblePanel3 = new Spry.Widget.CollapsiblePanel("CollapsiblePanel3",{enableKeyboardNavigation:false});
+//var asOpt={containsString:true, moveNextKeyCode:9};
+//var as1 = new Spry.Widget.AutoSuggest('SugCname1', 'cnameMenu1', 'dsSug', 'name',asOpt);
+//var as2 = new Spry.Widget.AutoSuggest('SugCname2', 'cnameMenu2', 'dsSug', 'name',asOpt);
+//var as3 = new Spry.Widget.AutoSuggest('SugDesp1', 'despMenu1', 'dsSug', 'name',asOpt);
+//var as4 = new Spry.Widget.AutoSuggest('SugDesp2', 'despMenu2', 'dsSug', 'name',asOpt);
+</script>
+
+
+
+</body>
+</html>
